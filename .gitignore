@@ -1,5 +1,5 @@
 # USER ADDED - protect password in db-connector
-db-connector.js
+/db-connector.js
 
 # Logs
 logs
