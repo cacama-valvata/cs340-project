@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/colleyc-osu/cs340-project/issues"
   },
-  "homepage": "https://github.com/colleyc-osu/cs340-project#readme"
+  "homepage": "https://github.com/colleyc-osu/cs340-project#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "forever": "^3.0.4",
+    "mysql": "^2.18.1"
+  }
 }
