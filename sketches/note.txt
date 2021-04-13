@@ -1,0 +1,1 @@
+for the "manage orders" tab, probably in the sort box, an ability to grab all the users with (last) names starting with [alphabetical letter]
