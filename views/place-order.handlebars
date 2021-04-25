@@ -1,1 +1,22 @@
-<h1>You can place an order here (soon)</h1>
+<main class="content" id="place-order">
+
+	<label for="memberid-prompt" id="memberid-label">MemberID</label>
+	<input name="memberid-prompt" type="text" id="memberid-prompt">
+
+	<label for="checkoutdate-prompt" id="checkoutdate-label">Checkout Date</label>
+	<input name="checkoutdate-prompt" type="date" id="checkoutdate-prompt">
+
+	<div id="mo-bookids">
+		<div>
+			<label for="add-book-prompt" id="add-book-label">Book ID</label>
+			<input name="add-book-prompt" type="text" id="add-book-prompt">
+		</div>
+
+		{{! mo-addbook }}
+	</div>
+
+	<button type="button" id="add-book-order">+ add another book</button>
+
+	<button type="button" id="submit-place-order">Submit</button>
+
+</main>

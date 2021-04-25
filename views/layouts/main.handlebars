@@ -1,22 +1,41 @@
 <!doctype html>
 <html>
-<head>
-	<title>Rocky Road Library</title>
-    <link rel="stylesheet" type='text/css' href="/css/style.css" />
-</head>
-<body>
-    <div class="header">Rocky Road Library</div>
-    <div class="navigation">
-      <a href="/browse-catalog">Browse Catalog</a>
-      <a href="/manage-orders">Manage Orders</a>
-      <a href="/place-order">Place Order</a>
-      <a href="/add-book">Add Book</a>
-    </div>
-	{{{body}}}
-    <!-- mountain range svg here -->
-    <div class="footer">
-        <div>31 Fudge Way | Rocky Road, MT 59444</div>
-        <div>(406) 444 - 3131</div>
-    </div>
-</body>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Rocky Road Library</title>
+
+		<link rel="stylesheet" href="/style.css" charset="utf-8" defer>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" crossorigin="anonymous">
+
+		<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.js" charset="utf-8" defer></script>
+		<script src="/index.js" charset="utf-8" defer></script>
+	</head>
+
+	<body>
+
+		<header>
+			<div id="header">Rocky Road Library</div>
+			<nav id="navlinks">
+				<a href="/browse-catalog">Browse Catalog</a>
+				<a href="/manage-orders">Manage Orders</a>
+				<a href="/place-order">Place Order</a>
+				<a href="/add-book">Add Book</a>
+			</nav>
+		</header>
+
+
+		{{{body}}}
+
+
+		<footer>
+			<!-- mountain range svg here -->
+			<div id="footer">
+				<div id="address">31 Fudge Way | Rocky Road, MT 59444</div>
+				<div id="phone-no">(406) 444 - 3131</div>
+			</div>
+		</footer>
+
+	</body>
+
 </html>
