@@ -1,36 +1,37 @@
 <main class="content" id="manage-orders">
-
-	<div id="sortbooks-sidebar">
-		<h5>Sort by...</h5>
-		<div id="sort-fields-catalog">
-		<!-- fix later -->
-			<input name="sort-title" type="text" id="sort-title" placeholder="Title of book">
-			<input name="sort-member" type="text" id="sort-member" placeholder="Member name">
-			<input name="sort-date-out" type="text" id="sort-date-out" placeholder="Date checked-out">
-			<input name="sort-date-in" type="text" id="sort-date-in" placeholder="Date returned">
-			<input name="sort-bookid" type="text" id="sort-bookid" placeholder="Book ID">
-		</div>
-		<button type="button" id="submit-sort">Update</button>
-	</div>
-
-	<div id="search-main">
-		<div id="search-bar">
-			<input name="search-prompt" type="text" id="search-prompt" placeholder="Search...">
-			<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
+	<div class="column-container">
+		<div class="side-left" id="sortbooks-sidebar">
+			<h5>Sort by...</h5>
+			<div id="sort-fields-catalog">
+			<!-- fix later -->
+				<input name="sort-title" type="text" id="sort-title" placeholder="Title of book">
+				<input name="sort-member" type="text" id="sort-member" placeholder="Member name">
+				<input name="sort-date-out" type="text" id="sort-date-out" placeholder="Date checked-out">
+				<input name="sort-date-in" type="text" id="sort-date-in" placeholder="Date returned">
+				<input name="sort-bookid" type="text" id="sort-bookid" placeholder="Book ID">
+			</div>
+			<button class="btn update-btn" type="button" id="submit-sort">Update</button>
 		</div>
 
-		<div id="members">
-			{{#each members}}
-				{{>membercheckouts}}
-			{{/each}}
-		</div>
-	</div>
+		<div class="center-section" id="search-main">
+			<div id="search-bar">
+				<input name="search-prompt" type="text" id="search-prompt" placeholder="Search...">
+				<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
+			</div>
 
-	<div id="open-checkouts-sidebar">
-		<h5>Open Checkouts</h5>
-		<div id="open-checkouts">
+			<div id="members">
+				{{#each members}}
+					{{>membercheckouts}}
+				{{/each}}
+			</div>
 		</div>
-		<!-- have client js go through above info and addChild the open checkouts -->
+
+		<div class="side-right" id="open-checkouts-sidebar">
+			<h5>Open Checkouts</h5>
+			<div id="open-checkouts">
+			</div>
+			<!-- have client js go through above info and addChild the open checkouts -->
+		</div>
 	</div>
 
 </main>

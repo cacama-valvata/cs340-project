@@ -1,22 +1,30 @@
 <main class="content" id="place-order">
 
-	<label for="memberid-prompt" id="memberid-label">MemberID</label>
-	<input name="memberid-prompt" type="text" id="memberid-prompt">
+	<div class="field-container">
+		<div>
+			<label for="memberid-prompt" id="memberid-label">MemberID</label>
+		</div>
+		<input name="memberid-prompt" type="text" id="memberid-prompt">
+	</div>
 
-	<label for="checkoutdate-prompt" id="checkoutdate-label">Checkout Date</label>
-	<input name="checkoutdate-prompt" type="date" id="checkoutdate-prompt">
+	<div class="field-container">
+		<div>
+			<label for="checkoutdate-prompt" id="checkoutdate-label">Checkout Date</label>
+		</div>
+		<input name="checkoutdate-prompt" type="date" id="checkoutdate-prompt">
+	</div>
 
-	<div class="mo-bookids">
+	<div class="mo-bookids field-container">
 		<div>
 			<label for="add-book-prompt" id="add-book-label">Book ID</label>
-			<input name="add-book-prompt" type="text" id="add-book-prompt">
 		</div>
+			<input name="add-book-prompt" type="text" id="add-book-prompt">
 
 		{{! mo-addbook }}
 	</div>
 
 	<button type="button" id="add-book-order">+ add another book</button>
-
-	<button type="button" id="submit-place-order">Submit</button>
+	<br>
+	<button class="btn submit-btn" type="button" id="submit-place-order">Submit</button>
 
 </main>

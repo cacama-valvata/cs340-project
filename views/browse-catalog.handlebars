@@ -1,33 +1,34 @@
 <main class="content" id="browse">
-
-	<div id="sortmembers-sidebar">
-		<h5>Sort by...</h5>
-		<div id="sort-fields-catalog">
-		<!-- fix later, isnt sort fields lol -->
-			<input name="sort-title" type="text" id="sort-title" placeholder="Title">
-			<input name="sort-author" type="text" id="sort-author" placeholder="Author">
-			<input name="sort-genre" type="text" id="sort-genre" placeholder="Genre">
-			<input name="sort-bookid" type="text" id="sort-bookid" placeholder="Book ID">
-		</div>
-		<button type="button" id="submit-sort">Update</button>
-	</div>
-
-	<div id="search-main">
-		<div id="search-bar">
-			<input name="search-prompt" type="text" id="search-prompt" placeholder="Search...">
-			<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
+	<div class="column-container">
+		<div class="side-left" id="sortmembers-sidebar">
+			<h5>Sort by...</h5>
+			<div id="sort-fields-catalog">
+			<!-- fix later, isnt sort fields lol -->
+				<input name="sort-title" type="text" id="sort-title" placeholder="Title">
+				<input name="sort-author" type="text" id="sort-author" placeholder="Author">
+				<input name="sort-genre" type="text" id="sort-genre" placeholder="Genre">
+				<input name="sort-bookid" type="text" id="sort-bookid" placeholder="Book ID">
+			</div>
+			<button class="btn update-btn" type="button" id="submit-sort">Update</button>
 		</div>
 
-		<div id="books">
-			{{#each books}}
-				{{>catalogbook}}
-			{{/each}}
-		</div>
-	</div>
+		<div class="center-section" id="search-main">
+			<div id="search-bar">
+				<input name="search-prompt" type="text" id="search-prompt" placeholder="Search...">
+				<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
+			</div>
 
-	<div id="weekly-picks">
-		<h5>Weekly Picks</h5>
-		<!-- fill with static content later -->
+			<div id="books">
+				{{#each books}}
+					{{>catalogbook}}
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="side-right" id="weekly-picks">
+			<h5>Weekly Picks</h5>
+			<!-- fill with static content later -->
+		</div>
 	</div>
 
 </main>
