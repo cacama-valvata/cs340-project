@@ -79,6 +79,13 @@ footer {
   border: 2px solid #000000;
 }
 
+.sort-field {
+  text-align: center;
+  width: 65%;
+  height: 22px;
+  border: 2px solid #000000;
+}
+
 #ab-fname-prompt {
   width: 17%;
 }
@@ -115,24 +122,32 @@ footer {
   color: #355437;
 }
 
+.add-another {
+  background-color: transparent;
+  border: none;
+  height: 25px;
+  margin-top: 5px;
+  color: #355437;
+}
+
+/* So mouse behaves like buttons are interactive */
 button:hover {
   cursor: pointer;
 }
 
+/* Submit and update buttons */
 .btn {
   border-radius: 10px;
   background-color: #78ad7b;
   font-weight: bold;
   border-color: #000000;
 }
-
 .submit-btn {
   width: 20%;
   height: 25px;
   margin-top: 20px;
   margin-left: 45.5%;
 }
-
 .update-btn {
   width: 150px;
   height: 25px;
@@ -140,23 +155,106 @@ button:hover {
   font-weight: normal;
 }
 
-.side-right {
-  border: 2px solid #000000;
-  flex: 0.6;
-}
-
-.side-left {
-  border: 2px solid #000000;
-  flex: 0.6;
-}
-
-.center-section {
-  flex: 1;
-}
-
+/* Holds three columns in Browse Catalog and Manage Orders */
 .column-container {
-  display: flex;
+  overflow: hidden;
   text-align: center;
-  padding: 4px;
-  height: 64vh;
+  width: 100%;
+}
+
+/* Columns in Browse Catalog and Manage Orders */
+.side-right {
+  width: calc(25% - 12px);
+  border: 2px solid #000000;
+  height: calc(100% - 252px);
+  position: absolute;
+  margin-top: 4px;
+  margin-left: calc(75% + 4px);
+}
+.side-left {
+  width: calc(25% - 12px);
+  border: 2px solid #000000;
+  height: calc(100% - 252px);
+  position: absolute;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+.center-section {
+  width: 50%;
+  height: calc(100% - 152px);
+  position: absolute;
+  margin-left: calc(25%);
+}
+
+/* Text box for searching */
+#search-prompt {
+  padding-left: 4px;
+  width: 70%;
+  height: 22px;
+  margin-top: 15px;
+  border: 2px solid #000000;
+  font-style: italic;
+}
+
+/* Search chevron button */
+#search-books-button {
+  background-color: black;
+  color: white;
+  height: 28px;
+  width: 28px;
+}
+
+/* Sort by headers */
+.sort-header {
+  font-style: italic;
+}
+
+/* Headers for Sort by, Weekly Picks, and Open Checkouts */
+h5 {
+  font-weight: lighter;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+/* Title for each book listed in Browse Catalog */
+.book-title {
+  font-style: italic;
+  text-align: left;
+  margin-left: 10%;
+  margin-top: 20px;
+}
+
+/* Holds attributes listed for each book in Browse Catalog */
+.book-detail-container {
+  padding-left: 10%;
+  text-align: left;
+}
+.book-detail-container div {
+  margin-top: 3px;
+  margin-right: 15px;
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+/* Title for each order listed in Manage Orders */
+.order-title {
+  font-weight: bold;
+  float: none;
+  text-align: left;
+  margin-left: 10%;
+  margin-top: 20px;
+}
+
+/* Holds attributes listed for each order in Manage Orders */
+.order-detail-container {
+  width: 100%;
+  overflow: hidden;
+  padding-left: calc(10% + 15px);
+}
+.order-detail-container div {
+  float: left;
+  margin-top: 3px;
+  margin-right: 15px;
+  font-weight: lighter;
+  font-size: 14px;
 }

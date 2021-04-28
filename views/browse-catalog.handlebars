@@ -1,13 +1,28 @@
 <main class="content" id="browse">
 	<div class="column-container">
 		<div class="side-left" id="sortmembers-sidebar">
-			<h5>Sort by...</h5>
+			<h5 class="sort-header">Sort by...</h5>
 			<div id="sort-fields-catalog">
-			<!-- fix later, isnt sort fields lol -->
+			<!-- fix later, isnt sort fields lol
 				<input name="sort-title" type="text" id="sort-title" placeholder="Title">
 				<input name="sort-author" type="text" id="sort-author" placeholder="Author">
 				<input name="sort-genre" type="text" id="sort-genre" placeholder="Genre">
 				<input name="sort-bookid" type="text" id="sort-bookid" placeholder="Book ID">
+			-->
+			<!-- This is one way we could implement this where additional sort fields can be
+			added and the priority of the sort depends on the order the sorts are added. Additional
+			sort fields could be added via the "+ add sort criteria". If we keep it, I can add
+			a JS function to change the options dynamically so an option can't be chosen twice.-->
+				<select class="sort-field" name="sort-field-1" id="sort-field-book-1">
+					<option value="none">None</option>
+					<option value="title">Title</option>
+					<option value="author">Author</option>
+					<option value="genre">Genre</option>
+					<option value="id">Book ID</option>
+				</select>
+				<br>
+				<button class="add-another" id="add-sort-book">+ add sort criteria</button>
+
 			</div>
 			<button class="btn update-btn" type="button" id="submit-sort">Update</button>
 		</div>
@@ -16,6 +31,32 @@
 			<div id="search-bar">
 				<input name="search-prompt" type="text" id="search-prompt" placeholder="Search...">
 				<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
+			</div>
+
+			<!-- Temporary -->
+			<div>
+				<div class="book-title">Book Title</div>
+				<div class="book-detail-container">
+					<div>author</div>
+					<div>genre</div>
+					<div>ISBN</div>
+				</div>
+			</div>
+			<div>
+				<div class="book-title">Book Title</div>
+				<div class="book-detail-container">
+					<div>author</div>
+					<div>genre</div>
+					<div>ISBN</div>
+				</div>
+			</div>
+			<div>
+				<div class="book-title">Book Title</div>
+				<div class="book-detail-container">
+					<div>author</div>
+					<div>genre</div>
+					<div>ISBN</div>
+				</div>
 			</div>
 
 			<div id="books">

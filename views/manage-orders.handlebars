@@ -1,14 +1,28 @@
 <main class="content" id="manage-orders">
 	<div class="column-container">
 		<div class="side-left" id="sortbooks-sidebar">
-			<h5>Sort by...</h5>
+			<h5 class="sort-header">Sort by...</h5>
 			<div id="sort-fields-catalog">
-			<!-- fix later -->
+			<!-- fix later
 				<input name="sort-title" type="text" id="sort-title" placeholder="Title of book">
 				<input name="sort-member" type="text" id="sort-member" placeholder="Member name">
 				<input name="sort-date-out" type="text" id="sort-date-out" placeholder="Date checked-out">
 				<input name="sort-date-in" type="text" id="sort-date-in" placeholder="Date returned">
 				<input name="sort-bookid" type="text" id="sort-bookid" placeholder="Book ID">
+			-->
+
+				<select class="sort-field" name="sort-field-1" id="sort-field-order-1">
+					<option value="none">None</option>
+					<option value="title">Title of Book</option>
+					<option value="member">Member Name</option>
+					<option value="checked-out">Date Checked-Out</option>
+					<option value="returned">Date Returned</option>
+					<option value="id">Book ID</option>
+				</select>
+				<br>
+				<button class="add-another" id="add-sort-order">+ add sort criteria</button>
+
+
 			</div>
 			<button class="btn update-btn" type="button" id="submit-sort">Update</button>
 		</div>
@@ -17,6 +31,44 @@
 			<div id="search-bar">
 				<input name="search-prompt" type="text" id="search-prompt" placeholder="Search...">
 				<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
+			</div>
+
+			<div>
+				<div class="order-title">Member name</div>
+				<div class="order-detail-container">
+					<div>Book title (ISBN)</div>
+					<div>Checked out: xx</div>
+					<div>Returned: xx</div>
+				</div>
+				<div class="order-detail-container">
+					<div>Book title (ISBN)</div>
+					<div>Checked out: xx</div>
+					<div>Returned: xx</div>
+				</div>
+				<div class="order-detail-container">
+					<div>Book title (ISBN)</div>
+					<div>Checked out: xx</div>
+					<div>Returned: xx</div>
+				</div>
+			</div>
+
+			<div>
+				<div class="order-title">Member name</div>
+				<div class="order-detail-container">
+					<div>Book title (ISBN)</div>
+					<div>Checked out: xx</div>
+					<div>Returned: xx</div>
+				</div>
+				<div class="order-detail-container">
+					<div>Book title (ISBN)</div>
+					<div>Checked out: xx</div>
+					<div>Returned: xx</div>
+				</div>
+				<div class="order-detail-container">
+					<div>Book title (ISBN)</div>
+					<div>Checked out: xx</div>
+					<div>Returned: xx</div>
+				</div>
 			</div>
 
 			<div id="members">
