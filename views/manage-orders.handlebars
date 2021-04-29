@@ -33,47 +33,18 @@
 				<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
 			</div>
 
-			<div>
-				<div class="order-title">Member name</div>
-				<div class="order-detail-container">
-					<div>Book title (ISBN)</div>
-					<div>Checked out: xx</div>
-					<div>Returned: xx</div>
-				</div>
-				<div class="order-detail-container">
-					<div>Book title (ISBN)</div>
-					<div>Checked out: xx</div>
-					<div>Returned: xx</div>
-				</div>
-				<div class="order-detail-container">
-					<div>Book title (ISBN)</div>
-					<div>Checked out: xx</div>
-					<div>Returned: xx</div>
-				</div>
-			</div>
-
-			<div>
-				<div class="order-title">Member name</div>
-				<div class="order-detail-container">
-					<div>Book title (ISBN)</div>
-					<div>Checked out: xx</div>
-					<div>Returned: xx</div>
-				</div>
-				<div class="order-detail-container">
-					<div>Book title (ISBN)</div>
-					<div>Checked out: xx</div>
-					<div>Returned: xx</div>
-				</div>
-				<div class="order-detail-container">
-					<div>Book title (ISBN)</div>
-					<div>Checked out: xx</div>
-					<div>Returned: xx</div>
-				</div>
-			</div>
-
 			<div id="members">
 				{{#each members}}
-					{{>membercheckouts}}
+					<div>
+						<div class="order-title">{{member}}</div>
+						{{#each checkouts}}
+							<div class="order-detail-container">
+								<div>{{title}} ({{id}})</div>
+								<div>Date: {{date}}</div>
+								<div>Returned: {{returned}}</div>
+							</div>
+						{{/each}}
+					</div>
 				{{/each}}
 			</div>
 		</div>
@@ -83,6 +54,16 @@
 			<div id="open-checkouts">
 			</div>
 			<!-- have client js go through above info and addChild the open checkouts -->
+			{{#each openCheckouts}}
+				<div>
+					<div class="order-title">{{member}}</div>
+					<div class="order-detail-container">
+						<div>{{title}} ({{id}})</div>
+						<div>Date: {{date}}</div>
+						<div>Returned: {{returned}}</div>
+					</div>
+				</div>
+			{{/each}}
 		</div>
 	</div>
 

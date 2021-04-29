@@ -24,41 +24,120 @@ var db = require("./db-connector");
 
 /* ROUTES */
 
-app.get("/", function(req, res) {
-	res.status(301).redirect("/browse-catalog");
-	next();
+app.get("/", function (req, res) {
+  res.status(301).redirect("/browse-catalog");
+  next();
 });
 
 app.get("/browse-catalog", function (req, res) {
-	//db.pool.query(query, function(err, results, fields) {});
-	const context = {};
+  //db.pool.query(query, function(err, results, fields) {});
+  const context = {
+    books: [
+      {
+        title: "The Adventures of Huckleberry Finn",
+        author: "Mark Twain",
+        genre: "Picaresque Novel",
+        id: 1,
+      },
+      {
+        title: "Alice's Adventures in Wonderland",
+        author: "Lewis Carroll",
+        genre: "Fantasy",
+        id: 2,
+      },
+      {
+        title: "The Great Gatsby",
+        author: "F. Scott Fitzgerald",
+        genre: "Tragedy",
+        id: 3,
+      },
+    ],
+  };
 
-	res.status(200).render("browse-catalog", context);
+  res.status(200).render("browse-catalog", context);
 });
 
 app.get("/manage-orders", function (req, res) {
-	//db.pool.query(query, function(err, results, fields) {});
-	const context = {};
+  //db.pool.query(query, function(err, results, fields) {});
+  const context = {
+    members: [
+      {
+        member: "John Smith",
+        checkouts: [
+          {
+            title: "The Great Gatsby",
+            id: 3,
+            date: "04-20-2020",
+            returned: "Yes",
+          },
+          {
+            title: "Alice's Adventures in Wonderland",
+            id: 2,
+            date: "04-20-2020",
+            returned: "Yes",
+          },
+          {
+            title: "The Adventures of Huckleberry Finn",
+            id: 1,
+            date: "01-03-2020",
+            returned: "Yes",
+          },
+        ],
+      },
+      {
+        member: "Linda Johnson",
+        checkouts: [
+          {
+            title: "Hamlet",
+            id: 4,
+            date: "01-17-2021",
+            returned: "Yes",
+          },
+          {
+            title: "To Kill a Mockingbird",
+            id: 7,
+            date: "02-21-2021",
+            returned: "Yes",
+          },
+          {
+            title: "Catch-22",
+            id: 10,
+            date: "02-21-2021",
+            returned: "No",
+          },
+        ],
+      },
+    ],
+    openCheckouts: [
+      {
+        member: "Linda Johnson",
+        title: "Catch-22",
+        id: 10,
+        date: "02-21-2021",
+        returned: "No",
+      },
+    ],
+  };
 
-	res.status(200).render("manage-orders", context);
+  res.status(200).render("manage-orders", context);
 });
 
 app.get("/place-order", function (req, res) {
-	//db.pool.query(query, function(err, results, fields) {});
-	const context = {};
+  //db.pool.query(query, function(err, results, fields) {});
+  const context = {};
 
-	res.status(200).render("place-order", context);
+  res.status(200).render("place-order", context);
 });
 
 app.get("/add-book", function (req, res) {
-	//db.pool.query(query, function(err, results, fields) {});
-	const context = {};
+  //db.pool.query(query, function(err, results, fields) {});
+  const context = {};
 
-	res.status(200).render("add-book", context);
+  res.status(200).render("add-book", context);
 });
 
 /* LISTENER */
 
 app.listen(PORT, function () {
-	console.log("Listening on port " + PORT);
+  console.log("Listening on port " + PORT);
 });

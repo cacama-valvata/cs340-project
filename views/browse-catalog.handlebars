@@ -33,35 +33,16 @@
 				<button type="button" id="search-books-button"><i class="fas fa-chevron-right"></i></button>
 			</div>
 
-			<!-- Temporary -->
-			<div>
-				<div class="book-title">Book Title</div>
-				<div class="book-detail-container">
-					<div>author</div>
-					<div>genre</div>
-					<div>ISBN</div>
-				</div>
-			</div>
-			<div>
-				<div class="book-title">Book Title</div>
-				<div class="book-detail-container">
-					<div>author</div>
-					<div>genre</div>
-					<div>ISBN</div>
-				</div>
-			</div>
-			<div>
-				<div class="book-title">Book Title</div>
-				<div class="book-detail-container">
-					<div>author</div>
-					<div>genre</div>
-					<div>ISBN</div>
-				</div>
-			</div>
-
 			<div id="books">
 				{{#each books}}
-					{{>catalogbook}}
+					<div>
+						<div class="book-title">{{title}}</div>
+						<div class="book-detail-container">
+							<div>{{author}}</div>
+							<div>{{genre}}</div>
+							<div>{{id}}</div>
+						</div>
+					</div>
 				{{/each}}
 			</div>
 		</div>
@@ -69,6 +50,38 @@
 		<div class="side-right" id="weekly-picks">
 			<h5>Weekly Picks</h5>
 			<!-- fill with static content later -->
+				<div>
+					<div class="book-title">1984</div>
+					<div class="book-detail-container">
+						<div>George Orwell</div>
+						<div>Science Fiction</div>
+						<div>19</div>
+					</div>
+				</div>
+				<div>
+					<div class="book-title">To Kill a Mockingbird</div>
+					<div class="book-detail-container">
+						<div>Harper Lee</div>
+						<div>Novel</div>
+						<div>17</div>
+					</div>
+				</div>
+				<div>
+					<div class="book-title">Hamlet</div>
+					<div class="book-detail-container">
+						<div>William Shakespeare</div>
+						<div>Tragedy</div>
+						<div>9</div>
+					</div>
+				</div>
+				<div>
+					<div class="book-title">Catch-22</div>
+					<div class="book-detail-container">
+						<div>Catch-22</div>
+						<div>Satire</div>
+						<div>12</div>
+					</div>
+				</div>
 		</div>
 	</div>
 

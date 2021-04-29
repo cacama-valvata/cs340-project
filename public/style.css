@@ -241,7 +241,7 @@ h5 {
   font-weight: bold;
   float: none;
   text-align: left;
-  margin-left: 10%;
+  margin-left: 7%;
   margin-top: 20px;
 }
 
@@ -249,12 +249,12 @@ h5 {
 .order-detail-container {
   width: 100%;
   overflow: hidden;
-  padding-left: calc(10% + 15px);
+  padding-left: calc(10%);
 }
 .order-detail-container div {
   float: left;
   margin-top: 3px;
   margin-right: 15px;
   font-weight: lighter;
-  font-size: 14px;
+  font-size: 12px;
 }
