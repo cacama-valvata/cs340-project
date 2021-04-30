@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build": "handlebars ./views/partials/moaddbook.handlebars -f ./public/moaddbook.js"
   },
   "repository": {
     "type": "git",
