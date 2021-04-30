@@ -108,6 +108,8 @@ footer {
   font-weight: bold;
 }
 
+/* IDK WHY CLASS="MO-BOOKIDS" ACTS DIFFERENT */
+
 .field-container:first-child {
   margin-top: 15px;
 }
@@ -197,7 +199,7 @@ button:hover {
 }
 
 /* Search chevron button */
-#search-books-button {
+#search-books-button, #search-members-button {
   background-color: black;
   color: white;
   height: 28px;
