@@ -86,11 +86,13 @@ footer {
   border: 2px solid #000000;
 }
 
-#ab-fname-prompt {
+#ab-fname-prompt,
+#mm-first-name-prompt {
   width: 17%;
 }
 
-#ab-lname-prompt {
+#ab-lname-prompt,
+#mm-last-name-prompt {
   width: 17%;
   margin-left: 1px;
 }
@@ -112,6 +114,10 @@ footer {
 
 .field-container:first-child {
   margin-top: 15px;
+}
+
+.field-container button {
+  float: left;
 }
 
 #add-book-order {
@@ -157,6 +163,20 @@ button:hover {
   font-weight: normal;
 }
 
+.edit-btn {
+  width: 75px;
+  height: 25px;
+  margin-left: 15px;
+  margin-top: 5px;
+}
+
+.delete-btn {
+  width: 75px;
+  height: 25px;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
 /* Holds three columns in Browse Catalog and Manage Orders */
 .column-container {
   overflow: hidden;
@@ -166,15 +186,15 @@ button:hover {
 
 /* Columns in Browse Catalog and Manage Orders */
 .side-right {
-  width: calc(25% - 12px);
+  width: calc(23% - 12px);
   border: 2px solid #000000;
   height: calc(100% - 252px);
   position: absolute;
   margin-top: 4px;
-  margin-left: calc(75% + 4px);
+  margin-left: calc(77% + 4px);
 }
 .side-left {
-  width: calc(25% - 12px);
+  width: calc(23% - 12px);
   border: 2px solid #000000;
   height: calc(100% - 252px);
   position: absolute;
@@ -182,10 +202,10 @@ button:hover {
   margin-left: 4px;
 }
 .center-section {
-  width: 50%;
+  width: 54%;
   height: calc(100% - 152px);
   position: absolute;
-  margin-left: calc(25%);
+  margin-left: calc(23%);
 }
 
 /* Text box for searching */
@@ -199,7 +219,8 @@ button:hover {
 }
 
 /* Search chevron button */
-#search-books-button, #search-members-button {
+#search-books-button,
+#search-members-button {
   background-color: black;
   color: white;
   height: 28px;
@@ -243,7 +264,7 @@ h5 {
   font-weight: bold;
   float: none;
   text-align: left;
-  margin-left: 7%;
+  margin-left: 5%;
   margin-top: 20px;
 }
 
@@ -251,7 +272,7 @@ h5 {
 .order-detail-container {
   width: 100%;
   overflow: hidden;
-  padding-left: calc(10%);
+  padding-left: calc(5%);
 }
 .order-detail-container div {
   float: left;
@@ -259,4 +280,11 @@ h5 {
   margin-right: 15px;
   font-weight: lighter;
   font-size: 12px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 25px;
+  margin-left: 12%;
 }

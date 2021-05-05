@@ -1,0 +1,43 @@
+<main class="content" id="manage-members">
+
+    <h2>Add Member</h2>
+	<div id="manage-members-fields">
+		<div class="field-container">
+			<div>
+				<label for="mm-name-prompt" id="mm-name-label">Name</label>
+			</div>
+			<input name="mm-first-name-prompt" type="text" id="mm-first-name-prompt">
+            <input name="mm-last-name-prompt" type="text" id="mm-last-name-prompt">
+		</div>
+
+		<div class="field-container">
+			<div>
+				<label for="mm-email-prompt" id="mm-email-label">Email</label>
+			</div>
+			<input name="mm-email-prompt" type="email" id="mm-email-prompt">
+		</div>
+
+        <div class="field-container">
+			<div>
+				<label for="mm-phone-prompt" id="mm-phone-label">Phone</label>
+			</div>
+			<input name="mm-phone-prompt" type="tel" id="mm-phone-prompt">
+		</div>
+	</div>
+	<button class="btn submit-btn" type="button" id="manage-members-submit">Submit</button>
+
+    {{!-- I'm not a fan of having these sections separated by headers like this... maybe adding tabs or buttons to swap between adding, insert, and delete would be better visually? --}}
+
+    <h2>Edit and Delete</h2>
+    <div id="manage-members-fields">
+		<div class="field-container">
+			<div>
+				<label for="mm-name-prompt" id="mm-name-label">Member ID</label>
+			</div>
+			<input name="mm-first-name-prompt" type="text" id="mm-first-name-prompt">
+            <button class="btn edit-btn" type="button" id="edit-window-btn">Edit</button>
+            <button class="btn delete-btn" type="button" id="manage-members-submit">Delete</button>
+		</div>
+	</div>
+
+</main>

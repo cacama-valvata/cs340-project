@@ -63,6 +63,7 @@ app.get("/manage-orders", function (req, res) {
     members: [
       {
         member: "John Smith",
+        memberId: 1,
         checkouts: [
           {
             title: "The Great Gatsby",
@@ -86,6 +87,7 @@ app.get("/manage-orders", function (req, res) {
       },
       {
         member: "Linda Johnson",
+        memberId: 2,
         checkouts: [
           {
             title: "Hamlet",
@@ -129,11 +131,18 @@ app.get("/place-order", function (req, res) {
   res.status(200).render("place-order", context);
 });
 
-app.get("/add-book", function (req, res) {
+app.get("/manage-books", function (req, res) {
   //db.pool.query(query, function(err, results, fields) {});
   const context = {};
 
-  res.status(200).render("add-book", context);
+  res.status(200).render("manage-books", context);
+});
+
+app.get("/manage-members", function (req, res) {
+  //db.pool.query(query, function(err, results, fields) {});
+  const context = {};
+
+  res.status(200).render("manage-members", context);
 });
 
 /* LISTENER */
