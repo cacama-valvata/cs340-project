@@ -288,3 +288,40 @@ h2 {
   margin-top: 25px;
   margin-left: 12%;
 }
+
+/* Navigation bar */
+.sidebar {
+  margin-left: 15px;
+  margin-top: 0;
+  width: 13%;
+  min-width: 125px;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+/* Buttons/links within navigation bar */
+.sidebar a {
+  display: block;
+  color: #000;
+  padding: 8px 25px;
+  text-decoration: none;
+  background-color: gray;
+}
+
+.sidebar a:hover {
+  cursor: pointer;
+}
+
+#members-add {
+  background-color: lightgrey;
+}
+
+#members-add-form {
+  display: initial;
+}
+
+#members-update-form,
+#members-delete-form {
+  display: none;
+}
