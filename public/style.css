@@ -315,7 +315,8 @@ h2 {
   cursor: pointer;
 }
 
-#members-add, #books-add {
+#members-add,
+#books-add {
   background-color: lightgrey;
 }
 
@@ -327,4 +328,22 @@ h2 {
 #members-delete-form,
 #rm-book-fields {
   display: none;
+}
+
+.returned-submit {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  text-align: left;
+  background-color: transparent;
+  border: transparent;
+  position: absolute;
+  right: 10px;
+}
+
+.fa-check-square {
+  color: #3d573f;
+  position: absolute;
+  top: -1px;
+  right: 0px;
 }
