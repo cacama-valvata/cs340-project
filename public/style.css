@@ -87,12 +87,14 @@ footer {
 }
 
 #ab-fname-prompt,
-#mm-first-name-prompt {
+#mm-first-name-prompt,
+#um-first-name-prompt {
   width: 17%;
 }
 
 #ab-lname-prompt,
-#mm-last-name-prompt {
+#mm-last-name-prompt,
+#um-last-name-prompt {
   width: 17%;
   margin-left: 1px;
 }
@@ -313,7 +315,7 @@ h2 {
   cursor: pointer;
 }
 
-#members-add {
+#members-add, #books-add {
   background-color: lightgrey;
 }
 
@@ -322,6 +324,7 @@ h2 {
 }
 
 #members-update-form,
-#members-delete-form {
+#members-delete-form,
+#rm-book-fields {
   display: none;
 }

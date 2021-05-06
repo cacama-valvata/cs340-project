@@ -51,14 +51,14 @@
 			<h5>Open Checkouts</h5>
 			<div id="open-checkouts">
 			</div>
-			<!-- have client js go through above info and addChild the open checkouts -->
 			{{#each openCheckouts}}
-				<div>
+				<div data="{{id}}">
 					<div class="order-title">{{member}}</div>
 					<div class="order-detail-container">
 						<div>{{title}} ({{id}})</div>
 						<div>Checkout Date: {{date}}</div>
 						<div>Returned: {{returned}}</div>
+						<button type="button" class="returned-submit"><i class="fas fa-check-square"></i></button>
 					</div>
 				</div>
 			{{/each}}

@@ -1,4 +1,9 @@
-<main class="content" id="place-order">
+<main class="content" id="manage-books">
+
+	<nav class="sidebar">
+		<a id="books-add">Add</a>
+		<a id="books-delete">Delete</a>
+	</nav>
 
 	<div id="add-book-fields">
 		<div class="field-container">
@@ -22,8 +27,18 @@
 			</div>
 			<input name="ab-genre-prompt" type="text" id="ab-genre-prompt">
 		</div>
+		<button class="btn submit-btn" type="button" id="add-book-submit">Add</button>
 	</div>
 
-	<button class="btn submit-btn" type="button" id="add-book-submit">Submit</button>
+	<div id="rm-book-fields">
+		<div class="field-container">
+			<div>
+				<label for="rm-book-prompt" id="rm-books-label">Book Id</label>
+			</div>
+			<input name="rm-book-prompt" id="rm-book-prompt" type="number">
+		</div>
+
+		<button class="btn submit-btn" type="button" id="rm-books-submit">Remove</button>
+	</div>
 
 </main>
