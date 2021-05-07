@@ -131,6 +131,11 @@ app.get("/manage-orders", function (req, res) {
   res.status(200).render("manage-orders", context);
 });
 
+/* FOR MARKING CHECKOUTS AS RETURNED */
+app.post("/manage-orders/markReturned", function (req, res) {
+	res.status(200).send();
+});
+
 app.get("/place-order", function (req, res) {
   //db.pool.query(query, function(err, results, fields) {});
   const context = {};

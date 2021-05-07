@@ -71,7 +71,7 @@ if (document.getElementsByClassName("returned-submit")) {
 
 		request.addEventListener('load', function (event) {
 			if (event.target.status === 200) {
-				entry.remove;
+				entry.remove();
 				//change to yes on the middle column?
 			}
 			else {
