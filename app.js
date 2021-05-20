@@ -12,6 +12,11 @@ var handlebars = require("express-handlebars").create({
 app.engine("handlebars", handlebars.engine);
 app.set("view engine", "handlebars");
 
+var bodyParser = require("body-parser");
+const { response } = require("express");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // Port
 PORT = 3131;
 app.set("port", PORT);
@@ -133,7 +138,137 @@ app.get("/manage-orders", function (req, res) {
 
 /* FOR MARKING CHECKOUTS AS RETURNED */
 app.post("/manage-orders/markReturned", function (req, res) {
-	res.status(200).send();
+  res.status(200).send();
+});
+
+app.post("/manage-books/find-genre", function (req, res) {
+  // Does the genre exist?
+  let context = {};
+  db.pool.query(
+    "SELECT genreID FROM genre WHERE genreName = ?",
+    [req.body.genreInput],
+    function (err, rows, fields) {
+      context.results = rows;
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
+app.post("/manage-books/add-genre", function (req, res) {
+  // Add a new genre and return the genreId
+  let context = {};
+  db.pool.query(
+    "INSERT INTO genre (`genreName`) VALUES (?)",
+    [req.body.genreInput],
+    function (err, results) {
+      db.pool.query(
+        "SELECT genreID FROM genre WHERE genreName = ?",
+        [req.body.genreInput],
+        function (err, rows, fields) {
+          context.results = rows;
+          res.status(200).send(JSON.stringify(context));
+        }
+      );
+    }
+  );
+});
+
+app.post("/manage-books/find-author", function (req, res) {
+  // Does the author exist?
+  let context = {};
+  db.pool.query(
+    "SELECT authorID FROM author WHERE firstName = ? AND lastName = ?",
+    [req.body.authorFirstNameInput, req.body.authorLastNameInput],
+    function (err, rows, fields) {
+      context.results = rows;
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
+app.post("/manage-books/add-author", function (req, res) {
+  // Add a new author and return the authorId
+  let context = {};
+  db.pool.query(
+    "INSERT INTO author (`firstName`, `lastName`) VALUES (?, ?)",
+    [req.body.authorFirstNameInput, req.body.authorLastNameInput],
+    function (err, results) {
+      db.pool.query(
+        "SELECT authorID FROM author WHERE firstName = ? AND lastName = ?",
+        [req.body.authorFirstNameInput, req.body.authorLastNameInput],
+        function (err, rows, fields) {
+          context.results = rows;
+          res.status(200).send(JSON.stringify(context));
+        }
+      );
+    }
+  );
+});
+
+app.post("/manage-books/add-book", function (req, res) {
+  let context = {};
+  console.log(req.body);
+  db.pool.query(
+    "INSERT INTO book (`title`, `genreID`, `authorID`) VALUES (?, ?, ?)",
+    [req.body.titleInput, req.body.genreID, req.body.authorID],
+    function (err, result) {
+      context.results = {};
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
+app.post("/manage-members/add", function (req, res) {
+  db.pool.query(
+    "INSERT INTO member (`firstName`, `lastName`, `email`, `phone`) VALUES (?, ?, ?, ?)",
+    [
+      req.body.firstNameInput,
+      req.body.lastNameInput,
+      req.body.emailInput || "NULL",
+      req.body.phoneInput || "NULL",
+    ],
+    function (err, result) {
+      res.status(200).send();
+    }
+  );
+});
+
+app.post("/place-order/find-member", function (req, res) {
+  // Does the member exist?
+  let context = {};
+  db.pool.query(
+    "SELECT memberID FROM member WHERE memberID = ?",
+    [req.body.memberIDInput],
+    function (err, rows, fields) {
+      context.results = rows;
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
+app.post("/place-order/find-book", function (req, res) {
+  // Does the book exist?
+  let context = {};
+  db.pool.query(
+    "SELECT bookID FROM book WHERE bookID = ?",
+    [req.body.bookID],
+    function (err, rows, fields) {
+      context.results = rows;
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
+app.post("/place-order/add-order", function (req, res) {
+  let context = {};
+  db.pool.query(
+    "INSERT INTO checkout (`memberID`, `bookID`, `date`, `returned`) VALUES (?, ?, ?, ?)",
+    [req.body.memberIDInput, req.body.bookID, req.body.checkoutDateInput, 0],
+    function (err, result) {
+      context.results = {};
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
 });
 
 app.get("/place-order", function (req, res) {
