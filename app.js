@@ -26,39 +26,63 @@ var db = require("./db-connector");
 
 app.get("/", function (req, res) {
   res.status(301).redirect("/browse-catalog");
-  next();
+  //next();
 });
 
 app.get("/browse-catalog", function (req, res) {
-  //db.pool.query(query, function(err, results, fields) {});
-  const context = {
-    books: [
-      {
-        title: "The Adventures of Huckleberry Finn",
-        author: "Mark Twain",
-        genre: "Picaresque Novel",
-        id: 1,
-      },
-      {
-        title: "Alice's Adventures in Wonderland",
-        author: "Lewis Carroll",
-        genre: "Fantasy",
-        id: 2,
-      },
-      {
-        title: "The Great Gatsby",
-        author: "F. Scott Fitzgerald",
-        genre: "Tragedy",
-        id: 3,
-      },
-    ],
-  };
 
-  res.status(200).render("browse-catalog", context);
+  var queryall = "SELECT book.title, author.firstName, author.lastName, genre.genreName, book.bookID FROM book JOIN author ON author.authorID = book.authorID JOIN genre ON genre.genreID = book. genreID;";
+
+  db.pool.query(queryall, function(err, results, fields) {
+    const context = {
+      books: results
+    };
+    res.status(200).render("browse-catalog", context);
+
+  });
+
+  //res.status(200).render("browse-catalog", context);
+
+});
+
+/* SEARCH FUNCTION IN BROWSE CATALOG */
+app.get("/browse-catalog/search=:searchquery", function (req, res) {
+	var searchquery = req.params.searchquery;
+	searchquery = searchquery.replace(/-/g, " ");
+
+	var querysearch = "SELECT book.title, author.firstName, author.lastName, genre.genreName, book.bookID FROM book JOIN author ON author.authorID = book.authorID JOIN genre ON genre.genreID = book. genreID WHERE book.title LIKE '%" + searchquery + "%' OR author.firstName LIKE '%" + searchquery + "%' OR author.lastName LIKE '%" + searchquery + "%' OR genre.genreName LIKE '%" + searchquery + "%' OR book.bookID LIKE '%" + searchquery + "%';";
+
+	db.pool.query(querysearch, function(err, results, fields) {
+		const context = {
+			books: results
+		};
+		res.status(200).render("browse-catalog", context);
+	});
+
+});
+
+/* SORT FUNCTION IN BROWSE CATALOG */
+app.get("/browse-catalog/sort=title=:title=author=:author=genre=:genre=bookid=:bookid", function (req, res) {
+
+	var title = req.params.title.replace(/-/g, " ");
+	var author = req.params.author.replace(/-/g, " ");
+	var genre = req.params.genre.replace(/-/g, " ");
+	var bookid = req.params.bookid.replace(/-/g, " ");
+
+	var querysort = "SELECT book.title, author.firstName, author.lastName, genre.genreName, book.bookID FROM book JOIN author ON author.authorID = book.authorID JOIN genre ON genre.genreID = book. genreID WHERE book.title LIKE '%" + searchquery + "%' OR author.firstName LIKE '%" + searchquery + "%' OR author.lastName LIKE '%" + searchquery + "%' OR genre.genreName LIKE '%" + searchquery + "%' OR book.bookID LIKE '%" + searchquery + "%';";
+
 });
 
 app.get("/manage-orders", function (req, res) {
-  //db.pool.query(query, function(err, results, fields) {});
+
+  //var orders = "";
+  var queryOpen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID;";
+
+  /*const context =  {
+    members: ,
+    openCheckouts: queryOpen
+  };*/
+
   const context = {
     members: [
       {

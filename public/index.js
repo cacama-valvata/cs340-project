@@ -8,8 +8,9 @@ document.getElementById("search-books-button").onclick = function() {
 	}
 
 	var searchquery = document.getElementById("search-prompt").value;
-	var currentURL = window.location.pathname;
-	var requestURL = currentURL + "/search?=" + searchquery;
+	searchquery = searchquery.replace(/ /g, "-");
+	//var currentURL = window.location.pathname;
+	var requestURL = "/browse-catalog/search=" + searchquery;
 	
 	window.location = requestURL;
 }}
@@ -28,8 +29,13 @@ document.getElementById("submit-sort").onclick = function() {
 		var bookid = document.getElementById("sort-bookid").value;
 		// sanitize for question marks?
 
-		var currentURL = window.location.pathname;
-		var requestURL = currentURL + "/sort?title=" + title + "?author=" + author + "?genre=" + genre + "?bookid=" + bookid;
+		title = title.replace(/ /g, "-");
+		author = author.replace(/ /g, "-");
+		genre = genre.replace(/ /g, "-");
+		bookid = bookid.replace(/ /g, "-");
+
+		//var currentURL = window.location.pathname;
+		var requestURL = "/browse-catalog/sort=title=" + title + "=author=" + author + "=genre=" + genre + "=bookid=" + bookid;
 
 		window.location = requestURL;
 	}
@@ -47,8 +53,8 @@ document.getElementById("search-members-button").onclick = function() {
 	}
 
 	var searchquery = document.getElementById("search-prompt").value;
-	var currentURL = window.location.pathname;
-	var requestURL = currentURL + "/search?=" + searchquery;
+	//var currentURL = window.location.pathname;
+	var requestURL = "/manage-orders/search?=" + searchquery;
 	
 	window.location = requestURL;
 }}
