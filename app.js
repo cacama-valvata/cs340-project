@@ -207,15 +207,25 @@ app.post("/manage-books/add-author", function (req, res) {
 
 app.post("/manage-books/add-book", function (req, res) {
   let context = {};
-  console.log(req.body);
-  db.pool.query(
-    "INSERT INTO book (`title`, `genreID`, `authorID`) VALUES (?, ?, ?)",
-    [req.body.titleInput, req.body.genreID, req.body.authorID],
-    function (err, result) {
-      context.results = {};
-      res.status(200).send(JSON.stringify(context));
-    }
-  );
+  if (Object.keys(req.body).includes("genreID")) {
+    db.pool.query(
+      "INSERT INTO book (`title`, `genreID`, `authorID`) VALUES (?, ?, ?)",
+      [req.body.titleInput, req.body.genreID, req.body.authorID],
+      function (err, result) {
+        context.results = {};
+        res.status(200).send(JSON.stringify(context));
+      }
+    );
+  } else {
+    db.pool.query(
+      "INSERT INTO book (`title`, `authorID`) VALUES (?, ?)",
+      [req.body.titleInput, req.body.authorID],
+      function (err, result) {
+        context.results = {};
+        res.status(200).send(JSON.stringify(context));
+      }
+    );
+  }
 });
 
 app.post("/manage-members/add", function (req, res) {

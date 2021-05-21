@@ -48,23 +48,30 @@ if (addBookBtn) {
       genreInput,
     ];
 
-    // All fields must be filled
-    if (inputs.every((input) => input.length > 0)) {
-      // Does genre exist?
-      let foundGenre = await sendReqAddBook(
-        findGenreUrl,
-        { genreInput },
-        "Finding Genre"
-      );
-      // Add genre
-      if (!("genreID" in foundGenre)) {
-        foundGenre = await sendReqAddBook(
-          addGenreUrl,
+    // All fields except genreID must be filled
+    if (
+      authorFirstNameInput.length > 0 &&
+      authorLastNameInput.length > 0 &&
+      titleInput.length > 0
+    ) {
+      let genreID;
+      if (genreInput.length > 0) {
+        // The genre field is not empty
+        let foundGenre = await sendReqAddBook(
+          findGenreUrl,
           { genreInput },
-          "Adding Genre"
+          "Finding Genre"
         );
+        // The input in the genre field does not have a match
+        if (!("genreID" in foundGenre)) {
+          foundGenre = await sendReqAddBook(
+            addGenreUrl,
+            { genreInput },
+            "Adding Genre"
+          );
+        }
+        genreID = foundGenre.genreID;
       }
-      const { genreID } = foundGenre;
 
       // Does author exist?
       let foundAuthor = await sendReqAddBook(

@@ -307,11 +307,13 @@ document.getElementById("remove-members-submit").onclick = function () {
 if(document.getElementById("add-book-fields")) {
 const bookAddBtn = document.getElementById("books-add");
 const bookDeleteBtn = document.getElementById("books-delete");
-const bookBtns = [bookAddBtn, bookDeleteBtn];
+const bookUpdateBtn = document.getElementById("books-update");
+const bookBtns = [bookAddBtn, bookDeleteBtn, bookUpdateBtn];
 
 const bookAddForm = document.getElementById("add-book-fields");
 const bookDeleteForm = document.getElementById("rm-book-fields");
-const bookForms = [bookAddForm, bookDeleteForm];
+const bookUpdateForm = document.getElementById("update-books-fields");
+const bookForms = [bookAddForm, bookDeleteForm, bookUpdateForm];
 
 bookAddBtn.addEventListener("click", () => {
   bookBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
@@ -328,4 +330,12 @@ bookDeleteBtn.addEventListener("click", () => {
   bookDeleteForm.style.display = "initial";
   bookDeleteBtn.style.backgroundColor = "lightgray";
 });
+
+bookUpdateBtn.addEventListener("click", () => {
+	bookBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
+	bookForms.forEach((form) => (form.style.display = "none"));
+  
+	bookUpdateForm.style.display = "initial";
+	bookUpdateBtn.style.backgroundColor = "lightgray";
+  });
 }
