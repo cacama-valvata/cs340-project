@@ -2,6 +2,7 @@
 
 	<nav class="sidebar">
 		<a id="books-add">Add</a>
+		<a id="books-update">Update</a>
 		<a id="books-delete">Delete</a>
 	</nav>
 
@@ -28,6 +29,31 @@
 			<input name="ab-genre-prompt" type="text" id="ab-genre-prompt">
 		</div>
 		<button class="btn submit-btn" type="button" id="add-book-submit">Add</button>
+	</div>
+
+	<div id="update-books-fields">
+		<div class="field-container">
+			<div>
+				<label for="ub-title-prompt" id="ub-title-label">Title</label>
+			</div>
+			<input name="ub-title-prompt" type="text" id="ub-title-prompt">
+		</div>
+
+		<div class="field-container">
+			<div>
+				<label for="ub-fname-prompt" id="ub-authorname-label">Author Name</label>
+			</div>
+			<input name="ub-fname-prompt" type="text" id="ub-fname-prompt">
+			<input name="ub-lname-prompt" type="text" id="ub-lname-prompt">
+		</div>
+
+		<div class="field-container">
+			<div>
+				<label for="ub-genre-prompt" id="ub-genre-label">Genre</label>
+			</div>
+			<input name="ub-genre-prompt" type="text" id="ub-genre-prompt">
+		</div>
+		<button class="btn submit-btn" type="button" id="update-books-submit">Update</button>
 	</div>
 
 	<div id="rm-book-fields">

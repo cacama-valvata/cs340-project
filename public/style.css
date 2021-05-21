@@ -88,13 +88,15 @@ footer {
 
 #ab-fname-prompt,
 #mm-first-name-prompt,
-#um-first-name-prompt {
+#um-first-name-prompt,
+#ub-fname-prompt {
   width: 17%;
 }
 
 #ab-lname-prompt,
 #mm-last-name-prompt,
-#um-last-name-prompt {
+#um-last-name-prompt,
+#ub-lname-prompt {
   width: 17%;
   margin-left: 1px;
 }
@@ -326,7 +328,8 @@ h2 {
 
 #members-update-form,
 #members-delete-form,
-#rm-book-fields {
+#rm-book-fields,
+#update-books-fields {
   display: none;
 }
 

@@ -94,15 +94,17 @@ document.getElementById("add-book-order").onclick = function() {
 	// add another field to checkout a book
 
 	var newField = Handlebars.templates.moaddbook();
-	document.getElementById("mo-bookids-container").insertAdjacentHTML('beforeend', newField);
+	document.getElementById("mo-bookids-container").insertAdjacentHTML('afterend', newField);
 
 	document.getElementById("remove-book-order").onclick = function() {
 		// remove field that user added previously
-		var entry = event.target.parentElement.parentElement;
+		var entry = event.target.closest("#mo-bookids-container");
 		entry.remove();
 	}
 }}
 
+// Moved this to addOrder.js
+/*
 if (document.getElementById("submit-place-order")) {
 document.getElementById("submit-place-order").onclick = function() {
 	if (! (document.getElementById("memberid-prompt").value && document.getElementById("checkoutdate-prompt").value && document.getElementsByClassName("add-book-prompt")[0].value)) {
@@ -135,8 +137,8 @@ document.getElementById("submit-place-order").onclick = function() {
 				return;
 			}
 
-			/* THE REAL REQUEST */	
-			/* wanted to block in case memberID doesnt exist */
+			// THE REAL REQUEST
+			// wanted to block in case memberID doesnt exist
 			var requestURL = currentURL + '/submitOrder';
 			var request = new XMLHttpRequest();
 			request.open('POST', requestURL);
@@ -164,6 +166,7 @@ document.getElementById("submit-place-order").onclick = function() {
 
 	request.send(verifyBody);
 }}
+*/
 
 if (document.getElementById("members-add-form")) {
 const memberAddBtn = document.getElementById("members-add");
@@ -201,6 +204,8 @@ memberDeleteBtn.addEventListener("click", () => {
 });
 }
 
+// Moved this to addMember.js
+/*
 if (document.getElementById("members-add-form")) {
 document.getElementById("add-members-submit").onclick = function () {
 	if (document.getElementById("mm-first-name-prompt").value && document.getElementById("mm-last-name-prompt").value) {
@@ -235,6 +240,7 @@ document.getElementById("add-members-submit").onclick = function () {
 	}
 }
 }
+*/
 
 if (document.getElementById("members-update-form")) {
 document.getElementById("update-members-submit").onclick = function () {
@@ -307,11 +313,13 @@ document.getElementById("remove-members-submit").onclick = function () {
 if(document.getElementById("add-book-fields")) {
 const bookAddBtn = document.getElementById("books-add");
 const bookDeleteBtn = document.getElementById("books-delete");
-const bookBtns = [bookAddBtn, bookDeleteBtn];
+const bookUpdateBtn = document.getElementById("books-update");
+const bookBtns = [bookAddBtn, bookDeleteBtn, bookUpdateBtn];
 
 const bookAddForm = document.getElementById("add-book-fields");
 const bookDeleteForm = document.getElementById("rm-book-fields");
-const bookForms = [bookAddForm, bookDeleteForm];
+const bookUpdateForm = document.getElementById("update-books-fields");
+const bookForms = [bookAddForm, bookDeleteForm, bookUpdateForm];
 
 bookAddBtn.addEventListener("click", () => {
   bookBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
@@ -328,4 +336,12 @@ bookDeleteBtn.addEventListener("click", () => {
   bookDeleteForm.style.display = "initial";
   bookDeleteBtn.style.backgroundColor = "lightgray";
 });
+
+bookUpdateBtn.addEventListener("click", () => {
+	bookBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
+	bookForms.forEach((form) => (form.style.display = "none"));
+  
+	bookUpdateForm.style.display = "initial";
+	bookUpdateBtn.style.backgroundColor = "lightgray";
+  });
 }
