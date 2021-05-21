@@ -75,84 +75,42 @@ app.get("/browse-catalog/sort=title=:title=author=:author=genre=:genre=bookid=:b
 
 app.get("/manage-orders", function (req, res) {
 
-  //var orders = "";
-  var queryOpen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID;";
+  var queryorders = "SELECT member.firstName, member.lastName, member.memberID, book.title, book.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID ORDER BY member.memberID ASC;";
 
-  /*const context =  {
-    members: ,
-    openCheckouts: queryOpen
-  };*/
+  var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
 
-  const context = {
-    members: [
-      {
-        member: "John Smith",
-        memberId: 1,
-        checkouts: [
-          {
-            title: "The Great Gatsby",
-            id: 3,
-            date: "04-20-2020",
-            returned: "Yes",
-          },
-          {
-            title: "Alice's Adventures in Wonderland",
-            id: 2,
-            date: "04-20-2020",
-            returned: "Yes",
-          },
-          {
-            title: "The Adventures of Huckleberry Finn",
-            id: 1,
-            date: "01-03-2020",
-            returned: "Yes",
-          },
-        ],
-      },
-      {
-        member: "Linda Johnson",
-        memberId: 2,
-        checkouts: [
-          {
-            title: "Hamlet",
-            id: 4,
-            date: "01-17-2021",
-            returned: "Yes",
-          },
-          {
-            title: "To Kill a Mockingbird",
-            id: 7,
-            date: "02-21-2021",
-            returned: "Yes",
-          },
-          {
-            title: "Catch-22",
-            id: 10,
-            date: "02-21-2021",
-            returned: "No",
-          },
-        ],
-      },
-    ],
-    openCheckouts: [
-      {
-        member: "Linda Johnson",
-        title: "Catch-22",
-        id: 10,
-        date: "02-21-2021",
-        returned: "No",
-      },
-      {
-        member: "David Johnson",
-        title: "The Catcher in the Rye",
-        id: 17,
-        date: "01-1-2021",
-        returned: "No",
-      },
-    ],
-  };
+  db.pool.query (queryopen, function(err1, results1, fields1) {
 
-  res.status(200).render("manage-orders", context);
+    const context = {
+      members: [],
+      openCheckouts: results1
+    };
+    //console.log(context.openCheckouts);
+
+    db.pool.query (queryorders, function(err2, results2, fields2) {
+      var added = [];
+      results2.forEach(function (item) {
+        //console.log(item);
+        if (! added.includes(item.memberID)) {
+	  var member = {
+		member: item.firstName + " " + item.lastName,
+		memberID: item.memberID,
+		checkouts: []
+	  };
+	  context.members.push(member);
+	  added.push(item.memberID);
+	}
+	context.members[added.length-1].checkouts.push(item);
+      });
+	console.log(context);
+	context.members.forEach(function(m) {console.log(m);});
+	res.status(200).render("manage-orders", context);
+    }); 
+
+
+  });
+
+  //res.status(200).render("manage-orders", context);
 });
 
 /* FOR MARKING CHECKOUTS AS RETURNED */
