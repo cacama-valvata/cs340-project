@@ -54,7 +54,7 @@ document.getElementById("search-members-button").onclick = function() {
 
 	var searchquery = document.getElementById("search-prompt").value;
 	//var currentURL = window.location.pathname;
-	var requestURL = "/manage-orders/search?=" + searchquery;
+	var requestURL = "/manage-orders/search=" + searchquery;
 	
 	window.location = requestURL;
 }}

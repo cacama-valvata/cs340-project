@@ -43,6 +43,13 @@ app.get("/browse-catalog", function (req, res) {
 
   //res.status(200).render("browse-catalog", context);
 
+  /* I DUNNO WHY THE DATE COMES OUT SO FUNKY
+  var q = "select date from checkout;";
+  db.pool.query(q, function(err, results, fields) {
+    console.log(JSON.stringify(results));
+  });
+  */
+
 });
 
 /* SEARCH FUNCTION IN BROWSE CATALOG */
@@ -102,8 +109,8 @@ app.get("/manage-orders", function (req, res) {
 	}
 	context.members[added.length-1].checkouts.push(item);
       });
-	console.log(context);
-	context.members.forEach(function(m) {console.log(m);});
+	//console.log(context);
+	//context.members.forEach(function(m) {console.log(m);});
 	res.status(200).render("manage-orders", context);
     }); 
 
@@ -111,6 +118,48 @@ app.get("/manage-orders", function (req, res) {
   });
 
   //res.status(200).render("manage-orders", context);
+});
+
+/* SEARCH FN IN MANAGE ORDERS */
+app.get("/manage-orders/search?=:searchquery", function (req, res) {
+  var searchquery = req.params.searchquery;
+  searchquery = searchquery.replace(/-/g, " ");
+
+  var queryorders = "SELECT member.firstName, member.lastName, member.memberID, book.title, book.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE member.firstName LIKE '%" + searchquery + "%' OR member.lastName LIKE '%" + searchquery + "%' OR member.memberID LIKE '%" + searchquery + "%' OR book.title LIKE '%" + searchquery + "%' OR book.bookID LIKE '%" + searchquery + "%' OR checkout.date LIKE '%" + searchquery + "%' OR returned LIKE '%" + searchquery + "%' ORDER BY member.memberID ASC;";
+
+  var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
+
+  db.pool.query (queryopen, function(err1, results1, fields1) {
+
+    const context = {
+      members: [],
+      openCheckouts: results1
+    };
+    //console.log(context.openCheckouts);
+
+    db.pool.query (queryorders, function(err2, results2, fields2) {
+      var added = [];
+      results2.forEach(function (item) {
+        //console.log(item);
+        if (! added.includes(item.memberID)) {
+	  var member = {
+		member: item.firstName + " " + item.lastName,
+		memberID: item.memberID,
+		checkouts: []
+	  };
+	  context.members.push(member);
+	  added.push(item.memberID);
+	}
+	context.members[added.length-1].checkouts.push(item);
+      });
+	//console.log(context);
+	//context.members.forEach(function(m) {console.log(m);});
+	res.status(200).render("manage-orders", context);
+    }); 
+
+
+  });
+
 });
 
 /* FOR MARKING CHECKOUTS AS RETURNED */
