@@ -732,12 +732,13 @@ sortOrdersBtn.addEventListener("click", async (e) => {
        checkout.className = "order-detail-container";
        const checkoutTitle = document.createElement("div");
        checkoutTitle.textContent = `${order.title} (${order.bookID})`;
-       const date = document.createElement("div");
-       date.textContent = order.date;
+       const date = new Date(order.date);
+       const dateEl = document.createElement("div");
+       dateEl.textContent = `Checkout Date: ${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
        const returned = document.createElement("div");
-       returned.textContent = order.returned;
+       returned.textContent = `Returned: ${order.returned}`;
        checkout.appendChild(checkoutTitle);
-       checkout.appendChild(date);
+       checkout.appendChild(dateEl);
        checkout.appendChild(returned);
        previousMember.appendChild(checkout);
      } else {
@@ -751,12 +752,13 @@ sortOrdersBtn.addEventListener("click", async (e) => {
        checkout.className = "order-detail-container";
        const checkoutTitle = document.createElement("div");
        checkoutTitle.textContent = `${order.title} (${order.bookID})`;
-       const date = document.createElement("div");
-       date.textContent = order.date;
+       const date = new Date(order.date);
+       const dateEl = document.createElement("div");
+       dateEl.textContent = `Checkout Date: ${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
        const returned = document.createElement("div");
-       returned.textContent = order.returned;
+       returned.textContent = `Returned: ${order.returned}`;
        checkout.appendChild(checkoutTitle);
-       checkout.appendChild(date);
+       checkout.appendChild(dateEl);
        checkout.appendChild(returned);
        member.appendChild(title);
        member.appendChild(checkout);
