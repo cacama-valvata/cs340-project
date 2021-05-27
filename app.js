@@ -333,6 +333,16 @@ app.get("/manage-members", function (req, res) {
   res.status(200).render("manage-members", context);
 });
 
+/* DELETE MEMBER */
+app.post("/manage-members/deleteMember", function (req, res) {
+	var ID = req.body.memberID;
+	var dltquery = "DELETE FROM member WHERE memberID = " + ID + ";";
+
+	db.pool.query(dltquery, function(err, results, fields) {
+		res.status(200).send();
+	});
+});
+
 /* LISTENER */
 
 app.listen(PORT, function () {

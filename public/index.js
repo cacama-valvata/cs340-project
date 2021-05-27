@@ -295,6 +295,7 @@ document.getElementById("remove-members-submit").onclick = function () {
 		request.addEventListener('load', function (event) {
 			if (event.target.status === 200) {
 				alert("Member has been deleted.");
+				window.location = "/manage-members";
 			}
 			else {
 				alert("There was an error.");
