@@ -13,16 +13,14 @@
 
 				<select class="sort-field" name="sort-field-1" id="sort-field-order-1">
 					<option value="none">None</option>
-					<option value="title">Title of Book</option>
-					<option value="member">Member Name</option>
-					<option value="checked-out">Date Checked-Out</option>
+					<option value="book.title">Title of Book</option>
+					<option value="checkout.date">Date Checked-Out</option>
 					<option value="returned">Date Returned</option>
-					<option value="id">Book ID</option>
+					<option value="book.bookID">Book ID</option>
 				</select>
 				<br>
-				<button class="add-another" id="add-sort-order">+ add sort criteria</button>
 			</div>
-			<button class="btn update-btn" type="button" id="submit-sort">Update</button>
+			<button class="btn update-btn" type="button" id="submit-sort-orders">Update</button>
 		</div>
 
 		<div class="center-section" id="search-main">
@@ -33,7 +31,7 @@
 
 			<div id="members">
 				{{#each members}}
-					<div>
+					<div id="{{memberID}}">
 						<div class="order-title">{{member}} ({{memberID}})</div>
 						{{#each checkouts}}
 							<div class="order-detail-container">

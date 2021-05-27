@@ -57,6 +57,19 @@ app.get("/browse-catalog", function (req, res) {
 
 });
 
+app.post("/browse-catalog/sort", function (req, res) {
+  const query = `SELECT book.title, author.firstName, author.lastName, genre.genreName, book.bookID FROM book JOIN author ON author.authorID = book.authorID JOIN genre ON genre.genreID = book.genreID ORDER BY ${req.body.criteria} ASC;`;
+  db.pool.query(query, function(err, rows, fields) {
+    let books = [{
+      books: rows
+    }];
+    const context = {
+      results: books,
+    }
+    res.status(200).send(JSON.stringify(context));
+  })
+});
+
 /* SEARCH FUNCTION IN BROWSE CATALOG */
 app.get("/browse-catalog/search=:searchquery", function (req, res) {
 	var searchquery = req.params.searchquery;
@@ -123,6 +136,19 @@ app.get("/manage-orders", function (req, res) {
   });
 
   //res.status(200).render("manage-orders", context);
+});
+
+app.post("/manage-orders/sort", function (req, res) {
+  const query = `SELECT member.firstName, member.lastName, member.memberID, book.title, book.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID ORDER BY member.memberID, ${req.body.criteria} ASC;`;
+  db.pool.query(query, function(err, rows, fields) {
+    let orders = [{
+      orders: rows
+    }];
+    const context = {
+      results: orders,
+    }
+    res.status(200).send(JSON.stringify(context));
+  })
 });
 
 /* SEARCH FN IN MANAGE ORDERS */
@@ -217,6 +243,19 @@ app.post("/manage-books/find-author", function (req, res) {
   );
 });
 
+app.post("/manage-books/find-book", function (req, res) {
+  // Does the author exist?
+  let context = {};
+  db.pool.query(
+    "SELECT bookID FROM book WHERE bookID = ?",
+    [req.body.bookIDInput],
+    function (err, rows, fields) {
+      context.results = rows;
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
 app.post("/manage-books/add-author", function (req, res) {
   // Add a new author and return the authorId
   let context = {};
@@ -260,6 +299,7 @@ app.post("/manage-books/add-book", function (req, res) {
 });
 
 app.post("/manage-members/add", function (req, res) {
+  let context = {};
   db.pool.query(
     "INSERT INTO member (`firstName`, `lastName`, `email`, `phone`) VALUES (?, ?, ?, ?)",
     [
@@ -269,12 +309,33 @@ app.post("/manage-members/add", function (req, res) {
       req.body.phoneInput || "NULL",
     ],
     function (err, result) {
-      res.status(200).send();
+      context.results = {};
+      res.status(200).send(JSON.stringify(context));
     }
   );
 });
 
-app.post("/place-order/find-member", function (req, res) {
+app.post("/manage-members/update-member", function (req, res) {
+  // Select the current member data
+  let context = {};
+  db.pool.query(
+    "SELECT * FROM member WHERE memberID = ?",
+    [req.body.memberIDInput],
+    function (err, rows, fields) {
+      const [ formerAttributes ] = rows;
+      db.pool.query(
+        "UPDATE member SET `firstName` = ?, `lastName` = ?, `email` = ?, `phone` = ? WHERE `memberID` = ?",
+        [req.body.memberFirstNameInput || formerAttributes.firstName, req.body.memberLastNameInput || formerAttributes.lastName, req.body.memberEmailInput || formerAttributes.email, req.body.memberPhoneInput || formerAttributes.phone, req.body.memberIDInput],
+        function (err, result) {
+          context.results = {};
+          res.status(200).send(JSON.stringify(context));
+        }
+      );
+    }
+  );
+});
+
+app.post("/manage-members/find-member", function (req, res) {
   // Does the member exist?
   let context = {};
   db.pool.query(
@@ -311,6 +372,26 @@ app.post("/place-order/add-order", function (req, res) {
     }
   );
 });
+
+app.post("/manage-books/update-book", function (req, res) {
+  // Select the current book data
+  let context = {};
+  db.pool.query(
+    "SELECT * FROM book WHERE bookID = ?",
+    [req.body.bookIDInput],
+    function (err, rows, fields) {
+      const [ formerAttributes ] = rows;
+      db.pool.query(
+        "UPDATE book SET `title` = ?, `genreID` = ?, `authorID` = ? WHERE `bookID` = ?",
+        [req.body.titleInput || formerAttributes.title, req.body.genreID || formerAttributes.genreID, req.body.authorID || formerAttributes.authorID, req.body.bookIDInput],
+        function (err, result) {
+          context.results = {};
+          res.status(200).send(JSON.stringify(context));
+        }
+      );
+    }
+  );
+})
 
 app.get("/place-order", function (req, res) {
   //db.pool.query(query, function(err, results, fields) {});

@@ -15,6 +15,7 @@ document.getElementById("search-books-button").onclick = function() {
 	window.location = requestURL;
 }}
 
+/*
 if (document.getElementById("submit-sort")) {
 document.getElementById("submit-sort").onclick = function() {
 	// sort fields on the left-side for Browse & Members page
@@ -42,6 +43,7 @@ document.getElementById("submit-sort").onclick = function() {
 
 	alert("Nothing to sort");
 }}
+*/
 
 if (document.getElementById("search-members-button")) {
 document.getElementById("search-members-button").onclick = function() {
@@ -240,7 +242,7 @@ document.getElementById("add-members-submit").onclick = function () {
 	}
 }
 }
-*/
+
 
 if (document.getElementById("members-update-form")) {
 document.getElementById("update-members-submit").onclick = function () {
@@ -277,6 +279,7 @@ document.getElementById("update-members-submit").onclick = function () {
 	}
 }
 }
+*/
 
 if (document.getElementById("members-delete-form")) {
 document.getElementById("remove-members-submit").onclick = function () {
@@ -346,3 +349,419 @@ bookUpdateBtn.addEventListener("click", () => {
 	bookUpdateBtn.style.backgroundColor = "lightgray";
   });
 }
+
+// Urls used in addOrder, addMember, addBook, updateMember, and updateBook functionalities
+const requestUrls = {
+  addAuthor: "/manage-books/add-author",
+  addBook: "/manage-books/add-book",
+  addGenre: "/manage-books/add-genre",
+  addMember: "/manage-members/add",
+  addOrder: "/place-order/add-order",
+  findAuthor: "/manage-books/find-author",
+  findBook: "/manage-books/find-book",
+  findBookOrder: "/place-order/find-book",
+  findGenre: "/manage-books/find-genre",
+  findMember: "/manage-members/find-member",
+  sortBooks: "/browse-catalog/sort",
+  sortOrders: "/manage-orders/sort",
+  updateBook: "/manage-books/update-book",
+  updateMember: "/manage-members/update-member",
+};
+
+const sendRequest = async (url, payload, type) => {
+	const response = await fetch(url, {
+	  method: "POST",
+	  mode: "cors",
+	  cache: "default",
+	  credentials: "same-origin",
+	  headers: {
+		"Content-Type": "application/json",
+	  },
+	  redirect: "follow",
+	  referrerPolicy: "no-referrer",
+	  body: JSON.stringify(payload),
+	});
+	const { results } = await response.json();
+  
+	if (response.status > 200) {
+	  console.error(`${type}: Status ${response.status}`);
+	  return {};
+	} else {
+	  console.log(`${type}: Status ${response.status}`);
+	  return results[0] || {};
+	}
+  };
+
+// Add functionality for "Place Order"
+const addOrderBtn = document.getElementById("submit-place-order");
+if (addOrderBtn) {
+  addOrderBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const memberIDInput = document.getElementById("memberid-prompt").value;
+    const checkoutDateInput = document.getElementById("checkoutdate-prompt").value;
+
+    // Get array of nonempty bookID values
+    const bookIDFields = Array.from(document.getElementsByClassName("add-book-prompt"));
+    const bookIDInputs = [];
+    bookIDFields.forEach((field) => {
+      if (field.value.length > 0) bookIDInputs.push(field.value);
+    });
+
+    // Are all fields filled (at least one bookID)
+    if (
+      memberIDInput.length === 0 ||
+      checkoutDateInput.length === 0 ||
+      bookIDInputs.length === 0
+    ) {
+      console.error("Missing a field!");
+      return;
+    }
+
+    // Does the member exist?
+    const foundMember = await sendRequest(
+      requestUrls.findMember,
+      { memberIDInput },
+      "Finding Member"
+    );
+    if (!("memberID" in foundMember)) {
+      console.error("Member not found!");
+      return;
+    } else {
+      console.log(foundMember);
+    }
+
+    // Do the books exist?
+    let foundBookIDs = true;
+    let bookID;
+    for (let i = 0; i < bookIDInputs.length; i++) {
+      bookID = bookIDInputs[i];
+      const foundBook = await sendRequest(
+        requestUrls.findBookOrder,
+        { bookID },
+        `Finding Book #${bookID}`
+      );
+      if (!("bookID" in foundBook)) foundBookIDs = false;
+    }
+    if (!foundBookIDs) {
+      console.error("Invalid book ID");
+      return;
+    }
+
+    // Add order(s)
+    for (let i = 0; i < bookIDInputs.length; i++) {
+      bookID = bookIDInputs[i];
+      await sendRequest(
+        requestUrls.addOrder,
+        { memberIDInput, checkoutDateInput, bookID },
+        `Adding Order for Book #${bookID}`
+      );
+    }
+  })
+};
+
+// Add functionality for "Manage Members"
+const addMemberBtn = document.getElementById("add-members-submit");
+if (addMemberBtn) {
+  addMemberBtn.addEventListener("click", (e) => {
+	e.preventDefault();
+    const firstNameInput = document.getElementById("mm-first-name-prompt").value;
+    const lastNameInput = document.getElementById("mm-last-name-prompt").value;
+    const emailInput = document.getElementById("mm-email-prompt").value;
+    const phoneInput = document.getElementById("mm-phone-prompt").value;
+
+    if (firstNameInput.length > 0 && lastNameInput.length > 0) {
+      const payload = {
+        firstNameInput,
+        lastNameInput,
+        emailInput,
+        phoneInput,
+      };
+      sendRequest(requestUrls.addMember, payload, "Adding Member");
+    } else {
+      console.error("Missing first or last name!");
+    }
+  })
+};
+
+// Add functionality for "Manage Books"
+const addBookBtn = document.getElementById("add-book-submit");
+if (addBookBtn) {
+  addBookBtn.addEventListener("click", async (e) => {
+	e.preventDefault();
+    const titleInput = document.getElementById("ab-title-prompt").value;
+    const authorFirstNameInput = document.getElementById("ab-fname-prompt").value;
+    const authorLastNameInput = document.getElementById("ab-lname-prompt").value;
+    const genreInput = document.getElementById("ab-genre-prompt").value;
+
+    // All fields except genreID must be filled
+    if (
+      authorFirstNameInput.length > 0 &&
+      authorLastNameInput.length > 0 &&
+      titleInput.length > 0
+    ) {
+      let genreID;
+      if (genreInput.length > 0) {
+        // The genre field is not empty
+        let foundGenre = await sendRequest(
+          requestUrls.findGenre,
+          { genreInput },
+          "Finding Genre"
+        );
+        // The input in the genre field does not have a match
+        if (!("genreID" in foundGenre)) {
+          foundGenre = await sendRequest(
+            requestUrls.addGenre,
+            { genreInput },
+            "Adding Genre"
+          );
+        }
+        genreID = foundGenre.genreID;
+      }
+
+      // Does author exist?
+      let foundAuthor = await sendRequest(
+        requestUrls.findAuthor,
+        { authorFirstNameInput, authorLastNameInput },
+        "Finding Author"
+      );
+      // Add author
+      if (!("authorID" in foundAuthor)) {
+        foundAuthor = await sendRequest(
+          requestUrls.addAuthor,
+          { authorFirstNameInput, authorLastNameInput },
+          "Adding Author"
+        );
+      }
+      const { authorID } = foundAuthor;
+
+      const payload = {
+        titleInput,
+        authorID,
+        genreID,
+      };
+      // Add the book
+      sendRequest(requestUrls.addBook, payload, "Adding Book");
+    } else {
+      console.error("One of the fields is missing!");
+    }
+  })
+};
+
+// Update functionality for "Manage Members"
+const updateMemberBtn = document.getElementById("update-members-submit");
+if (updateMemberBtn) {
+  updateMemberBtn.addEventListener("click", async (e) => {
+	e.preventDefault();
+	const memberIDInput = document.getElementById("um-id-prompt").value;
+	const memberFirstNameInput = document.getElementById("um-first-name-prompt").value;
+	const memberLastNameInput = document.getElementById("um-last-name-prompt").value;
+	const memberEmailInput = document.getElementById("um-email-prompt").value;
+	const memberPhoneInput = document.getElementById("um-phone-prompt").value;
+	  
+	// There must be a memberID
+	if (memberIDInput.length === 0) return;
+	  
+	// Does the member exist?
+	let foundMember = await sendRequest(
+	  requestUrls.findMember,
+	  { memberIDInput },
+	  "Finding Member"
+	);
+	// The member doesn't exist
+	if (!("memberID" in foundMember)) return;
+	  
+	const payload = {
+	  memberIDInput,
+	  memberFirstNameInput,
+	  memberLastNameInput,
+	  memberEmailInput,
+	  memberPhoneInput,
+	};
+	// Update the book
+	sendRequest(requestUrls.updateMember, payload, "Updating Member");
+  })
+};
+
+// Update functionality for "Manage Books" -- see updateBook.js
+const updateBookBtn = document.getElementById("update-books-submit");
+if (updateBookBtn) {
+  updateBookBtn.addEventListener("click", async (e) => {
+	e.preventDefault();
+    const bookIDInput = document.getElementById("ub-book-id-prompt").value;
+    const titleInput = document.getElementById("ub-title-prompt").value;
+    const authorFirstNameInput = document.getElementById("ub-fname-prompt").value;
+    const authorLastNameInput = document.getElementById("ub-lname-prompt").value;
+    const genreInput = document.getElementById("ub-genre-prompt").value;
+
+    // There must be a bookID
+    if (bookIDInput.length === 0) return;
+
+    // Does the book exist?
+    let foundBook = await sendRequest(
+      requestUrls.findBook,
+      { bookIDInput },
+      "Finding Book"
+    );
+    // The book doesn't exist
+    if (!("bookID" in foundBook)) return;
+
+    // Does the genre exist?
+    let genreID;
+    if (genreInput.length > 0) {
+      // The genre field is not empty
+      let foundGenre = await sendRequest(
+        requestUrls.findGenre,
+        { genreInput },
+        "Finding Genre"
+      );
+      // The input in the genre field does not have a match
+      if (!("genreID" in foundGenre)) {
+        foundGenre = await sendRequest(
+          requestUrls.findGenre,
+          { genreInput },
+          "Adding Genre"
+        );
+      }
+      genreID = foundGenre.genreID;
+    }
+
+    // Does author exist?
+    let authorID;
+    if (authorFirstNameInput.length > 0 && authorLastNameInput.length > 0) {
+      // The author fields are not empty
+      let foundAuthor = await sendRequest(
+        requestUrls.findAuthor,
+        { authorFirstNameInput, authorLastNameInput },
+        "Finding Author"
+      );
+      // The input in the author fields does not have a match
+      if (!("authorID" in foundAuthor)) {
+        foundAuthor = await sendRequest(
+          requestUrls.addAuthor,
+          { authorFirstNameInput, authorLastNameInput },
+          "Adding Author"
+        );
+      }
+      authorID = foundAuthor.authorID;
+    }
+
+    const payload = {
+      bookIDInput,
+      titleInput,
+      authorID,
+      genreID,
+    };
+    // Update the book
+    sendRequest(requestUrls.updateBook, payload, "Updating Book");
+  })
+};
+
+const sortBooksBtn = document.getElementById("submit-sort");
+if (sortBooksBtn) {
+  sortBooksBtn.addEventListener("click", async (e) => {
+    const criteria = document.getElementById("sort-field-book-1").value;
+    if (criteria === 'none') return
+
+    const payload = {
+      criteria,
+    }
+
+    // Get sorted books
+    const results = await sendRequest(requestUrls.sortBooks, payload, "Sorting Books");
+
+    // Remove former books
+    const centerSection = document.getElementById("search-main");
+    const bookContainer = document.getElementById("books");
+    centerSection.removeChild(bookContainer);
+
+    // Add new books
+    const newBookContainer = document.createElement("div");
+    newBookContainer.id = "books";
+    results.books.forEach((book) => {
+      const bookEl = document.createElement("div");
+      
+      const title = document.createElement("div");
+      title.textContent = book.title;
+      title.className = "book-title";
+    
+      const detailContainer = document.createElement("div");
+      detailContainer.className = "book-detail-container";
+      const name = document.createElement("div");
+      name.textContent = `${book.firstName} ${book.lastName}`
+      const genre = document.createElement("div");
+      genre.textContent = book.genreName;
+      const bookID = document.createElement("div");
+      bookID.textContent = book.bookID;
+
+      detailContainer.appendChild(name);
+      detailContainer.appendChild(genre);
+      detailContainer.appendChild(bookID);
+      bookEl.appendChild(title);
+      bookEl.appendChild(detailContainer);
+      newBookContainer.appendChild(bookEl);
+    })
+    centerSection.appendChild(newBookContainer);
+  })
+};
+
+const sortOrdersBtn = document.getElementById("submit-sort-orders");
+sortOrdersBtn.addEventListener("click", async (e) => {
+  const criteria = document.getElementById("sort-field-order-1").value;
+  if (criteria === 'none') return
+
+  const payload = {
+    criteria,
+  }
+
+  // Get sorted books
+  const results = await sendRequest(requestUrls.sortOrders, payload, "Sorting Orders");
+  console.log(results);
+  // Remove former members
+  const centerSection = document.getElementById("search-main");
+  const memberContainer = document.getElementById("members");
+  centerSection.removeChild(memberContainer);
+
+  // Add new members
+  const newMemberContainer = document.createElement("div");
+  newMemberContainer.id = "members";
+  results.orders.forEach((order) => {
+     if (newMemberContainer.children.length > 0 && newMemberContainer.lastChild.id == order.memberID) {
+       // Append to checkout section of previous member section
+       const previousMember = newMemberContainer.lastChild;
+       const checkout = document.createElement("div");
+       checkout.className = "order-detail-container";
+       const checkoutTitle = document.createElement("div");
+       checkoutTitle.textContent = `${order.title} (${order.bookID})`;
+       const date = document.createElement("div");
+       date.textContent = order.date;
+       const returned = document.createElement("div");
+       returned.textContent = order.returned;
+       checkout.appendChild(checkoutTitle);
+       checkout.appendChild(date);
+       checkout.appendChild(returned);
+       previousMember.appendChild(checkout);
+     } else {
+       // Create new member section
+       const member = document.createElement("div");
+       member.id = order.memberID;
+       const title = document.createElement("div");
+       title.textContent = `${order.firstName} ${order.lastName} (${order.memberID})`;
+       title.className = "order-title";
+       const checkout = document.createElement("div");
+       checkout.className = "order-detail-container";
+       const checkoutTitle = document.createElement("div");
+       checkoutTitle.textContent = `${order.title} (${order.bookID})`;
+       const date = document.createElement("div");
+       date.textContent = order.date;
+       const returned = document.createElement("div");
+       returned.textContent = order.returned;
+       checkout.appendChild(checkoutTitle);
+       checkout.appendChild(date);
+       checkout.appendChild(returned);
+       member.appendChild(title);
+       member.appendChild(checkout);
+       newMemberContainer.appendChild(member);
+     }
+    });
+     centerSection.appendChild(newMemberContainer);
+});
