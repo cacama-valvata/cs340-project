@@ -80,6 +80,7 @@ if (document.getElementsByClassName("returned-submit")) {
 		request.addEventListener('load', function (event) {
 			if (event.target.status === 200) {
 				entry.remove();
+				location.reload();
 				//change to yes on the middle column?
 			}
 			else {
@@ -656,8 +657,9 @@ if (updateBookBtn) {
   })
 };
 
-const sortBooksBtn = document.getElementById("submit-sort");
-if (sortBooksBtn) {
+//const sortBooksBtn = document.getElementById("submit-sort");
+if (document.getElementById("submit-sort")) {
+  const sortBooksBtn = document.getElementById("submit-sort");
   sortBooksBtn.addEventListener("click", async (e) => {
     const criteria = document.getElementById("sort-field-book-1").value;
     if (criteria === 'none') return
@@ -704,6 +706,7 @@ if (sortBooksBtn) {
   })
 };
 
+if (document.getElementById("submit-sort-orders")) {
 const sortOrdersBtn = document.getElementById("submit-sort-orders");
 sortOrdersBtn.addEventListener("click", async (e) => {
   const criteria = document.getElementById("sort-field-order-1").value;
@@ -767,3 +770,38 @@ sortOrdersBtn.addEventListener("click", async (e) => {
     });
      centerSection.appendChild(newMemberContainer);
 });
+}
+
+//delete books
+if (document.getElementById("rm-book-fields")) {
+document.getElementById("rm-books-submit").onclick = function () {
+	if (document.getElementById("rm-book-prompt").value) {
+		var bookID = document.getElementById("rm-book-prompt").value;
+
+		var currentURL = window.location.pathname;
+		var requestURL = currentURL + '/deleteBook';
+
+		var request = new XMLHttpRequest();
+		request.open('POST', requestURL);
+
+		var requestBody = JSON.stringify({bookID: bookID});
+		request.setRequestHeader('Content-Type', 'application/json');
+
+		request.addEventListener('load', function (event) {
+			if (event.target.status === 200) {
+				alert("Book has been deleted.");
+				window.location = "/browse-catalog";
+			}
+			else {
+				alert("There was an error.");
+			}
+		});
+
+		request.send(requestBody);
+
+	}
+	else {
+		alert("Book ID must be filled out");
+	}
+}
+}

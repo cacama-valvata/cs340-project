@@ -50,10 +50,10 @@
 			<div id="open-checkouts">
 			</div>
 			{{#each openCheckouts}}
-				<div data="{{id}}">
+				<div data="{{checkoutID}}">
 					<div class="order-title">{{member}}</div>
 					<div class="order-detail-container">
-						<div>{{title}} ({{id}})</div>
+						<div>{{title}} ({{bookID}})</div>
 						<div>Checkout Date: {{date}}</div>
 						<div>Returned: {{returned}}</div>
 						<button type="button" class="returned-submit"><i class="fas fa-check-square"></i></button>
