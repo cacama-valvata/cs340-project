@@ -36,7 +36,7 @@ app.get("/", function (req, res) {
 
 app.get("/browse-catalog", function (req, res) {
 
-  var queryall = "SELECT book.title, author.firstName, author.lastName, genre.genreName, book.bookID FROM book JOIN author ON author.authorID = book.authorID JOIN genre ON genre.genreID = book. genreID;";
+  var queryall = "SELECT book.title, author.firstName, author.lastName, genre.genreName, book.bookID FROM book JOIN author ON author.authorID = book.authorID JOIN genre ON genre.genreID = book.genreID;";
 
   db.pool.query(queryall, function(err, results, fields) {
     const context = {
@@ -102,7 +102,7 @@ app.get("/manage-orders", function (req, res) {
 
   var queryorders = "SELECT member.firstName, member.lastName, member.memberID, book.title, book.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID ORDER BY member.memberID ASC;";
 
-  var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
+  var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, checkout.checkoutID, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
 
   db.pool.query (queryopen, function(err1, results1, fields1) {
     // Fix dates
@@ -117,6 +117,11 @@ app.get("/manage-orders", function (req, res) {
     };
     //console.log(context.openCheckouts);
 
+    context.openCheckouts.forEach(function(item) {
+	const date = new Date(item.date);
+	item.date = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    });
+
     db.pool.query (queryorders, function(err2, results2, fields2) {
       // Fix dates
       let date;
@@ -127,6 +132,8 @@ app.get("/manage-orders", function (req, res) {
       var added = [];
       results2.forEach(function (item) {
         //console.log(item);
+	const date = new Date(item.date);
+	item.date = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
         if (! added.includes(item.memberID)) {
 	  var member = {
 		member: item.firstName + " " + item.lastName,
@@ -140,6 +147,7 @@ app.get("/manage-orders", function (req, res) {
       });
 	//console.log(context);
 	//context.members.forEach(function(m) {console.log(m);});
+
 	res.status(200).render("manage-orders", context);
     }); 
 
@@ -169,7 +177,7 @@ app.get("/manage-orders/search?=:searchquery", function (req, res) {
 
   var queryorders = "SELECT member.firstName, member.lastName, member.memberID, book.title, book.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE member.firstName LIKE '%" + searchquery + "%' OR member.lastName LIKE '%" + searchquery + "%' OR member.memberID LIKE '%" + searchquery + "%' OR book.title LIKE '%" + searchquery + "%' OR book.bookID LIKE '%" + searchquery + "%' OR checkout.date LIKE '%" + searchquery + "%' OR returned LIKE '%" + searchquery + "%' ORDER BY member.memberID ASC;";
 
-  var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
+  var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, checkout.checkoutID, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
 
   db.pool.query (queryopen, function(err1, results1, fields1) {
 
@@ -179,9 +187,16 @@ app.get("/manage-orders/search?=:searchquery", function (req, res) {
     };
     //console.log(context.openCheckouts);
 
+    context.openCheckouts.forEach(function(item) {
+	const date = new Date(item.date);
+	item.date = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    });
+
     db.pool.query (queryorders, function(err2, results2, fields2) {
       var added = [];
       results2.forEach(function (item) {
+	const date = new Date(item.date);
+	item.date = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
         //console.log(item);
         if (! added.includes(item.memberID)) {
 	  var member = {
@@ -206,7 +221,13 @@ app.get("/manage-orders/search?=:searchquery", function (req, res) {
 
 /* FOR MARKING CHECKOUTS AS RETURNED */
 app.post("/manage-orders/markReturned", function (req, res) {
-  res.status(200).send();
+  var ID = req.body.id;
+  var querymark = "UPDATE checkout set returned = 1 where checkoutID = " + ID + ";";
+
+  db.pool.query(querymark, function (err, results, fields) {
+	res.status(200).send();
+  });
+
 });
 
 app.post("/manage-books/find-genre", function (req, res) {
@@ -434,6 +455,17 @@ app.post("/manage-members/deleteMember", function (req, res) {
 		res.status(200).send();
 	});
 });
+
+/* DELETE BOOK */
+app.post("/manage-books/deleteBook", function (req, res) {
+	var ID = req.body.bookID;
+	var dltquery = "DELETE FROM book WHERE bookID = " + ID + ";";
+
+	db.pool.query(dltquery, function(err, results, fields) {
+		res.status(200).send();
+	});
+});
+
 
 /* LISTENER */
 
