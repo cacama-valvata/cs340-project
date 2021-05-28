@@ -105,7 +105,12 @@ app.get("/manage-orders", function (req, res) {
   var queryopen = "SELECT member.firstName, member.lastName, book.title, checkout.bookID, checkout.date, IF(checkout.returned, 'Yes', 'No') as returned FROM checkout JOIN member ON member.memberID = checkout.memberID JOIN book ON book.bookID = checkout.bookID WHERE returned = 'No';";
 
   db.pool.query (queryopen, function(err1, results1, fields1) {
-
+    // Fix dates
+    let date;
+    results1.forEach((order) => {
+      date = new Date(order.date);
+      order.date = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`
+    });
     const context = {
       members: [],
       openCheckouts: results1
@@ -113,6 +118,12 @@ app.get("/manage-orders", function (req, res) {
     //console.log(context.openCheckouts);
 
     db.pool.query (queryorders, function(err2, results2, fields2) {
+      // Fix dates
+      let date;
+      results2.forEach((order) => {
+        date = new Date(order.date);
+        order.date = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`
+      });
       var added = [];
       results2.forEach(function (item) {
         //console.log(item);

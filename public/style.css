@@ -350,3 +350,7 @@ h2 {
   top: -1px;
   right: 0px;
 }
+
+#members, #books, .side-right {
+  overflow: scroll;
+}
