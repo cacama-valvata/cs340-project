@@ -1,3 +1,13 @@
+const displayDuration = 3;
+const displayMessage = (el, message, sec) => {
+  // Display a message in an element for a given number of seconds
+  const text = el.textContent;
+  el.textContent = message;
+  setInterval(() => {
+    el.textContent = text;
+  }, sec * 1000)
+};
+
 if (document.getElementById("search-books-button")) {
 document.getElementById("search-books-button").onclick = function() {
 	// middle specific-search field for Browse page
@@ -14,36 +24,6 @@ document.getElementById("search-books-button").onclick = function() {
 	
 	window.location = requestURL;
 }}
-
-/*
-if (document.getElementById("submit-sort")) {
-document.getElementById("submit-sort").onclick = function() {
-	// sort fields on the left-side for Browse & Members page
-	// will be changed later
-
-	if (document.getElementById("sort-title").value || document.getElementById("sort-author").value || document.getElementById("sort-genre").value || document.getElementById("sort-bookid").value) {
-		// sort-title is the same for both pages and it shouldnt be
-		//if at least one field has a query
-		var title = document.getElementById("sort-title").value;
-		var author = document.getElementById("sort-author").value;
-		var genre = document.getElementById("sort-genre").value;
-		var bookid = document.getElementById("sort-bookid").value;
-		// sanitize for question marks?
-
-		title = title.replace(/ /g, "-");
-		author = author.replace(/ /g, "-");
-		genre = genre.replace(/ /g, "-");
-		bookid = bookid.replace(/ /g, "-");
-
-		//var currentURL = window.location.pathname;
-		var requestURL = "/browse-catalog/sort=title=" + title + "=author=" + author + "=genre=" + genre + "=bookid=" + bookid;
-
-		window.location = requestURL;
-	}
-
-	alert("Nothing to sort");
-}}
-*/
 
 if (document.getElementById("search-members-button")) {
 document.getElementById("search-members-button").onclick = function() {
@@ -106,71 +86,6 @@ document.getElementById("add-book-order").onclick = function() {
 	}
 }}
 
-// Moved this to addOrder.js
-/*
-if (document.getElementById("submit-place-order")) {
-document.getElementById("submit-place-order").onclick = function() {
-	if (! (document.getElementById("memberid-prompt").value && document.getElementById("checkoutdate-prompt").value && document.getElementsByClassName("add-book-prompt")[0].value)) {
-		alert("Empty fields.");
-		return;
-	}
-
-	var memberID = document.getElementById("memberid-prompt").value;
-	var COdate = document.getElementById("checkoutdate-prompt").value;
-	var selectbooks = document.querySelectorAll(".add-book-prompt");
-	var bookIDs = [];
-	selectbooks.forEach(function(item) {
-		bookIDs.push(item.value);
-	});
-	//sanitize bookIDs for blank inputs?
-
-	var currentURL = window.location.pathname;
-
-	var verifyURL = currentURL + '/verifyMember';
-	var verRequest = new XMLHttpRequest();
-	request.open('POST', verifyURL);
-	var verifyBody = JSON.stringify({memberID: memberID});
-	verRequest.setRequestHeader('Content-Type', 'application/json');
-	request.addEventListener('load', function (event) {
-		if (event.target.status === 200) {
-
-
-			if (event.target.response == 0) {
-				alert("The provided member does not exist. Add  them on the \"Manage Members\" page");
-				return;
-			}
-
-			// THE REAL REQUEST
-			// wanted to block in case memberID doesnt exist
-			var requestURL = currentURL + '/submitOrder';
-			var request = new XMLHttpRequest();
-			request.open('POST', requestURL);
-
-			var requestBody = JSON.stringify({memberID: memberID, checkout: COdate, bookIDs: bookIDs});
-			request.setRequestHeader('Content-Type', 'application/json');
-
-			request.addEventListener('load', function (event) {
-				if (event.target.status === 200) {
-					alert("Your order has been placed.");
-				}
-				else {
-					alert("There was an error.");
-				}
-			});
-
-			request.send(requestBody);
-
-
-		}
-		else {
-			alert("There was an error.");
-		}
-	});
-
-	request.send(verifyBody);
-}}
-*/
-
 if (document.getElementById("members-add-form")) {
 const memberAddBtn = document.getElementById("members-add");
 const memberUpdateBtn = document.getElementById("members-update");
@@ -207,81 +122,8 @@ memberDeleteBtn.addEventListener("click", () => {
 });
 }
 
-// Moved this to addMember.js
-/*
-if (document.getElementById("members-add-form")) {
-document.getElementById("add-members-submit").onclick = function () {
-	if (document.getElementById("mm-first-name-prompt").value && document.getElementById("mm-last-name-prompt").value) {
-		var fname = document.getElementById("mm-first-name-prompt").value;
-		var lname = document.getElementById("mm-last-name-prompt").value;
-		var phone = document.getElementById("mm-phone-prompt").value;
-		var email = document.getElementById("mm-email-prompt").value;
-
-		var currentURL = window.location.pathname;
-		var requestURL = currentURL + '/addMember';
-
-		var request = new XMLHttpRequest();
-		request.open('POST', requestURL);
-
-		var requestBody = JSON.stringify({fname: fname, lname: lname, phone: phone, email:email});
-		request.setRequestHeader('Content-Type', 'application/json');
-
-		request.addEventListener('load', function (event) {
-			if (event.target.status === 200) {
-				alert("Member has been added.");
-			}
-			else {
-				alert("There was an error.");
-			}
-		});
-
-		request.send(requestBody);
-
-	}
-	else {
-		alert("Both first name and last name must be filled out");
-	}
-}
-}
-
-
-if (document.getElementById("members-update-form")) {
-document.getElementById("update-members-submit").onclick = function () {
-	if (document.getElementById("um-id-prompt").value) {
-		var memberID = document.getElementById("um-id-prompt").value;
-		var fname = document.getElementById("um-first-name-prompt").value;
-		var lname = document.getElementById("um-last-name-prompt").value;
-		var phone = document.getElementById("um-phone-prompt").value;
-		var email = document.getElementById("um-email-prompt").value;
-
-		var currentURL = window.location.pathname;
-		var requestURL = currentURL + '/updateMember';
-
-		var request = new XMLHttpRequest();
-		request.open('POST', requestURL);
-
-		var requestBody = JSON.stringify({memberID: memberID, fname: fname, lname: lname, phone: phone, email:email});
-		request.setRequestHeader('Content-Type', 'application/json');
-
-		request.addEventListener('load', function (event) {
-			if (event.target.status === 200) {
-				alert("Member has been updated.");
-			}
-			else {
-				alert("There was an error.");
-			}
-		});
-
-		request.send(requestBody);
-
-	}
-	else {
-		alert("Member ID must be filled out");
-	}
-}
-}
-*/
-
+const removeMemberBtn = document.getElementById("remove-members-submit");
+const removeMemberError = document.getElementById("delete-member-error");
 if (document.getElementById("members-delete-form")) {
 document.getElementById("remove-members-submit").onclick = function () {
 	if (document.getElementById("dm-id-prompt").value) {
@@ -298,11 +140,11 @@ document.getElementById("remove-members-submit").onclick = function () {
 
 		request.addEventListener('load', function (event) {
 			if (event.target.status === 200) {
-				alert("Member has been deleted.");
+				displayMessage(removeMemberBtn, "Removed!", displayDuration);
 				window.location = "/manage-members";
 			}
 			else {
-				alert("There was an error.");
+				displayMessage(removeMemberError, "Something went wrong!", displayDuration);
 			}
 		});
 
@@ -310,7 +152,7 @@ document.getElementById("remove-members-submit").onclick = function () {
 
 	}
 	else {
-		alert("Member ID must be filled out");
+		displayMessage(removeMemberError, "Missing member ID!", displayDuration);
 	}
 }
 }
@@ -395,6 +237,7 @@ const sendRequest = async (url, payload, type) => {
 
 // Add functionality for "Place Order"
 const addOrderBtn = document.getElementById("submit-place-order");
+const addOrderError = document.getElementById("place-order-error");
 if (addOrderBtn) {
   addOrderBtn.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -415,6 +258,7 @@ if (addOrderBtn) {
       bookIDInputs.length === 0
     ) {
       console.error("Missing a field!");
+      displayMessage(addOrderError, "Missing Field!", displayDuration);
       return;
     }
 
@@ -426,6 +270,7 @@ if (addOrderBtn) {
     );
     if (!("memberID" in foundMember)) {
       console.error("Member not found!");
+      displayMessage(addOrderError, "Member not found!", displayDuration);
       return;
     } else {
       console.log(foundMember);
@@ -445,6 +290,7 @@ if (addOrderBtn) {
     }
     if (!foundBookIDs) {
       console.error("Invalid book ID");
+      displayMessage(addOrderError, "Invalid book ID!", displayDuration);
       return;
     }
 
@@ -457,11 +303,13 @@ if (addOrderBtn) {
         `Adding Order for Book #${bookID}`
       );
     }
+    displayMessage(addOrderBtn, "Added!", displayDuration);
   })
 };
 
 // Add functionality for "Manage Members"
 const addMemberBtn = document.getElementById("add-members-submit");
+const addMemberError = document.getElementById("add-member-error");
 if (addMemberBtn) {
   addMemberBtn.addEventListener("click", (e) => {
 	e.preventDefault();
@@ -478,7 +326,9 @@ if (addMemberBtn) {
         phoneInput,
       };
       sendRequest(requestUrls.addMember, payload, "Adding Member");
+      displayMessage(addMemberBtn, "Added!", displayDuration);
     } else {
+      displayMessage(addMemberError, "Missing first or last name!", displayDuration);
       console.error("Missing first or last name!");
     }
   })
@@ -486,6 +336,7 @@ if (addMemberBtn) {
 
 // Add functionality for "Manage Books"
 const addBookBtn = document.getElementById("add-book-submit");
+const addBookError = document.getElementById("add-book-error");
 if (addBookBtn) {
   addBookBtn.addEventListener("click", async (e) => {
 	e.preventDefault();
@@ -542,14 +393,17 @@ if (addBookBtn) {
       };
       // Add the book
       sendRequest(requestUrls.addBook, payload, "Adding Book");
+      displayMessage(addBookBtn, "Added!", displayDuration);
     } else {
       console.error("One of the fields is missing!");
+      displayMessage(addBookError, "Missing field!", displayDuration);
     }
   })
 };
 
 // Update functionality for "Manage Members"
 const updateMemberBtn = document.getElementById("update-members-submit");
+const updateMemberError = document.getElementById("update-member-error");
 if (updateMemberBtn) {
   updateMemberBtn.addEventListener("click", async (e) => {
 	e.preventDefault();
@@ -560,7 +414,10 @@ if (updateMemberBtn) {
 	const memberPhoneInput = document.getElementById("um-phone-prompt").value;
 	  
 	// There must be a memberID
-	if (memberIDInput.length === 0) return;
+	if (memberIDInput.length === 0) {
+    displayMessage(updateMemberError, "Missing member ID!", displayDuration);
+    return;
+  };
 	  
 	// Does the member exist?
 	let foundMember = await sendRequest(
@@ -569,7 +426,10 @@ if (updateMemberBtn) {
 	  "Finding Member"
 	);
 	// The member doesn't exist
-	if (!("memberID" in foundMember)) return;
+	if (!("memberID" in foundMember)) {
+    displayMessage(updateMemberError, "Member ID not found!", displayDuration);
+    return;
+  };
 	  
 	const payload = {
 	  memberIDInput,
@@ -579,12 +439,14 @@ if (updateMemberBtn) {
 	  memberPhoneInput,
 	};
 	// Update the book
-	sendRequest(requestUrls.updateMember, payload, "Updating Member");
+  sendRequest(requestUrls.updateMember, payload, "Updating Member");
+  displayMessage(updateMemberBtn, "Updated!", displayDuration);
   })
 };
 
 // Update functionality for "Manage Books" -- see updateBook.js
 const updateBookBtn = document.getElementById("update-books-submit");
+const updateBookError = document.getElementById("update-book-error");
 if (updateBookBtn) {
   updateBookBtn.addEventListener("click", async (e) => {
 	e.preventDefault();
@@ -595,7 +457,10 @@ if (updateBookBtn) {
     const genreInput = document.getElementById("ub-genre-prompt").value;
 
     // There must be a bookID
-    if (bookIDInput.length === 0) return;
+    if (bookIDInput.length === 0) {
+      displayMessage(updateBookError, "Missing book ID!", displayDuration);
+      return;
+    };
 
     // Does the book exist?
     let foundBook = await sendRequest(
@@ -604,7 +469,10 @@ if (updateBookBtn) {
       "Finding Book"
     );
     // The book doesn't exist
-    if (!("bookID" in foundBook)) return;
+    if (!("bookID" in foundBook)) {
+      displayMessage(updateBookError, "Book ID not found!", displayDuration);
+      return;
+    };
 
     // Does the genre exist?
     let genreID;
@@ -654,6 +522,7 @@ if (updateBookBtn) {
     };
     // Update the book
     sendRequest(requestUrls.updateBook, payload, "Updating Book");
+    displayMessage(updateBookBtn, "Updated!", displayDuration);
   })
 };
 
@@ -773,6 +642,8 @@ sortOrdersBtn.addEventListener("click", async (e) => {
 }
 
 //delete books
+const removeBookBtn = document.getElementById("rm-books-submit");
+const removeBookError = document.getElementById("delete-book-error");
 if (document.getElementById("rm-book-fields")) {
 document.getElementById("rm-books-submit").onclick = function () {
 	if (document.getElementById("rm-book-prompt").value) {
@@ -789,19 +660,18 @@ document.getElementById("rm-books-submit").onclick = function () {
 
 		request.addEventListener('load', function (event) {
 			if (event.target.status === 200) {
-				alert("Book has been deleted.");
+				displayMessage(removeBookBtn, "Removed!", displayDuration);
 				window.location = "/browse-catalog";
 			}
 			else {
-				alert("There was an error.");
+				displayMessage(removeBookError, "Something went wrong!", displayDuration);
 			}
 		});
 
 		request.send(requestBody);
-
 	}
 	else {
-		alert("Book ID must be filled out");
+    displayMessage(removeBookError, "Missing book ID!", displayDuration);
 	}
 }
 }

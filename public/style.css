@@ -354,3 +354,12 @@ h2 {
 #members, #books, .side-right {
   overflow: scroll;
 }
+
+.error-message {
+  color: red;
+  font-style: italic;
+  margin-top: 20px;
+  margin-left: 41%;
+  margin-right: 30%;
+  text-align: center;
+}
