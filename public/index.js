@@ -1,4 +1,22 @@
 const displayDuration = 3;
+const requestUrls = {
+  addAuthor: "/manage-books/add-author",
+  addBook: "/manage-books/add-book",
+  addGenre: "/manage-books/add-genre",
+  addMember: "/manage-members/add",
+  addOrder: "/place-order/add-order",
+  findAuthor: "/manage-books/find-author",
+  findBook: "/manage-books/find-book",
+  findBookOrder: "/place-order/find-book",
+  findGenre: "/manage-books/find-genre",
+  findMember: "/manage-members/find-member",
+  sortBooks: "/browse-catalog/sort",
+  sortOrders: "/manage-orders/sort",
+  updateBook: "/manage-books/update-book",
+  updateMember: "/manage-members/update-member",
+  viewMembers: "/manage-members/view-members",
+};
+
 const displayMessage = (el, message, sec) => {
   // Display a message in an element for a given number of seconds
   const text = el.textContent;
@@ -87,39 +105,80 @@ document.getElementById("add-book-order").onclick = function() {
 }}
 
 if (document.getElementById("members-add-form")) {
-const memberAddBtn = document.getElementById("members-add");
-const memberUpdateBtn = document.getElementById("members-update");
-const memberDeleteBtn = document.getElementById("members-delete");
-const memberBtns = [memberAddBtn, memberUpdateBtn, memberDeleteBtn];
+  const memberAddBtn = document.getElementById("members-add");
+  const memberUpdateBtn = document.getElementById("members-update");
+  const memberDeleteBtn = document.getElementById("members-delete");
+  const memberViewBtn = document.getElementById("members-view");
+  const memberBtns = [memberAddBtn, memberUpdateBtn, memberDeleteBtn, memberViewBtn];
 
-const memberAddForm = document.getElementById("members-add-form");
-const memberUpdateForm = document.getElementById("members-update-form");
-const memberDeleteForm = document.getElementById("members-delete-form");
-const memberForms = [memberAddForm, memberUpdateForm, memberDeleteForm];
+  const memberAddForm = document.getElementById("members-add-form");
+  const memberUpdateForm = document.getElementById("members-update-form");
+  const memberDeleteForm = document.getElementById("members-delete-form");
+  const memberView = document.getElementById("members-view-section");
+  const memberSections = [memberAddForm, memberUpdateForm, memberDeleteForm, memberView];
 
-memberAddBtn.addEventListener("click", () => {
-  memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
-  memberForms.forEach((form) => (form.style.display = "none"));
+  memberAddBtn.addEventListener("click", () => {
+    memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
+    memberSections.forEach((section) => (section.style.display = "none"));
+    if (document.getElementById("member-view-container")) {
+      memberView.removeChild(document.getElementById("member-view-container"));
+    }
 
-  memberAddForm.style.display = "initial";
-  memberAddBtn.style.backgroundColor = "lightgrey";
-});
+    memberAddForm.style.display = "initial";
+    memberAddBtn.style.backgroundColor = "lightgrey";
+  });
 
-memberUpdateBtn.addEventListener("click", () => {
-  memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
-  memberForms.forEach((form) => (form.style.display = "none"));
+  memberUpdateBtn.addEventListener("click", () => {
+    memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
+    memberSections.forEach((section) => (section.style.display = "none"));
+    if (document.getElementById("member-view-container")) {
+      memberView.removeChild(document.getElementById("member-view-container"));
+    }
 
-  memberUpdateForm.style.display = "initial";
-  memberUpdateBtn.style.backgroundColor = "lightgrey";
-});
+    memberUpdateForm.style.display = "initial";
+    memberUpdateBtn.style.backgroundColor = "lightgrey";
+  });
 
-memberDeleteBtn.addEventListener("click", () => {
-  memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
-  memberForms.forEach((form) => (form.style.display = "none"));
+  memberDeleteBtn.addEventListener("click", () => {
+    memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
+    memberSections.forEach((section) => (section.style.display = "none"));
+    if (document.getElementById("member-view-container")) {
+      memberView.removeChild(document.getElementById("member-view-container"));
+    }
 
-  memberDeleteForm.style.display = "initial";
-  memberDeleteBtn.style.backgroundColor = "lightgray";
-});
+    memberDeleteForm.style.display = "initial";
+    memberDeleteBtn.style.backgroundColor = "lightgray";
+  });
+
+  memberViewBtn.addEventListener("click", async () => {
+    memberBtns.forEach((btn) => (btn.style.backgroundColor = "gray"));
+    memberSections.forEach((section) => (section.style.display = "none"));
+
+    memberView.style.display = "initial";
+    memberViewBtn.style.backgroundColor = "lightgray";
+
+    const members = await sendRequest(requestUrls.viewMembers, {}, "Viewing Members", true);
+    const memberContainer = document.createElement("div");
+    memberContainer.id = "member-view-container";
+    members.forEach((member) => {
+      const memberEl = document.createElement("div");
+      memberEl.id = "member-container";
+      const memberId = document.createElement("div");
+      memberId.textContent = `ID: ${member.memberID}`;
+      const memberName = document.createElement("div");
+      memberName.textContent = `${member.firstName} ${member.lastName}`;
+      const memberEmail = document.createElement("div");
+      memberEmail.textContent = `${member.email}`;
+      const memberPhone = document.createElement("div");
+      memberPhone.textContent = `${member.phone}`;
+      memberEl.appendChild(memberId);
+      memberEl.appendChild(memberName);
+      memberEl.appendChild(memberEmail);
+      memberEl.appendChild(memberPhone);
+      memberContainer.appendChild(memberEl);
+    })
+    memberView.appendChild(memberContainer);
+  });
 }
 
 const removeMemberBtn = document.getElementById("remove-members-submit");
@@ -193,25 +252,7 @@ bookUpdateBtn.addEventListener("click", () => {
   });
 }
 
-// Urls used in addOrder, addMember, addBook, updateMember, and updateBook functionalities
-const requestUrls = {
-  addAuthor: "/manage-books/add-author",
-  addBook: "/manage-books/add-book",
-  addGenre: "/manage-books/add-genre",
-  addMember: "/manage-members/add",
-  addOrder: "/place-order/add-order",
-  findAuthor: "/manage-books/find-author",
-  findBook: "/manage-books/find-book",
-  findBookOrder: "/place-order/find-book",
-  findGenre: "/manage-books/find-genre",
-  findMember: "/manage-members/find-member",
-  sortBooks: "/browse-catalog/sort",
-  sortOrders: "/manage-orders/sort",
-  updateBook: "/manage-books/update-book",
-  updateMember: "/manage-members/update-member",
-};
-
-const sendRequest = async (url, payload, type) => {
+const sendRequest = async (url, payload, type, all = false) => {
 	const response = await fetch(url, {
 	  method: "POST",
 	  mode: "cors",
@@ -229,11 +270,14 @@ const sendRequest = async (url, payload, type) => {
 	if (response.status > 200) {
 	  console.error(`${type}: Status ${response.status}`);
 	  return {};
-	} else {
+	} else if (all) {
 	  console.log(`${type}: Status ${response.status}`);
+	  return results || {};
+	} else {
+    console.log(`${type}: Status ${response.status}`);
 	  return results[0] || {};
-	}
-  };
+  }
+};
 
 // Add functionality for "Place Order"
 const addOrderBtn = document.getElementById("submit-place-order");

@@ -347,6 +347,17 @@ app.post("/manage-members/add", function (req, res) {
   );
 });
 
+app.post("/manage-members/view-members", function (req, res) {
+  let context = {};
+  db.pool.query(
+    "SELECT memberID, firstName, lastName, email, phone FROM member",
+    function (err, rows, fields) {
+      context.results = rows;
+      res.status(200).send(JSON.stringify(context));
+    }
+  );
+});
+
 app.post("/manage-members/update-member", function (req, res) {
   // Select the current member data
   let context = {};
