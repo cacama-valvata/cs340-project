@@ -207,9 +207,11 @@ button:hover {
 }
 .center-section {
   width: 54%;
-  height: calc(100% - 152px);
+  height: calc(100% - 252px);
   position: absolute;
   margin-left: calc(23%);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 /* Text box for searching */
@@ -350,8 +352,9 @@ h2 {
   right: 0px;
 }
 
-#members, #books, .side-right {
-  overflow: scroll;
+.side-right {
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .error-message {
@@ -364,18 +367,21 @@ h2 {
 }
 
 #members-view-section {
-  display:none;
-  padding-bottom: 20px;
-}
-
-#members-view-section > div {
-  height: 40%;
+  display: none;
+  padding-bottom: 60px;
 }
 
 #member-view-container > div {
   margin-left: 25%;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  padding-top: 4px;
+  padding-bottom: 20px;
   font-size: 14px;
+}
+
+#member-view-container {
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 15px;
+  height: 50%;
+  padding-bottom: 100px;
 }
